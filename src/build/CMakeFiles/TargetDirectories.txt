@@ -1,3 +1,0 @@
-/home/david123car7/Documents/CPP/Projects/Space-Invaders/src/build/CMakeFiles/SpaceInvaders.dir
-/home/david123car7/Documents/CPP/Projects/Space-Invaders/src/build/CMakeFiles/edit_cache.dir
-/home/david123car7/Documents/CPP/Projects/Space-Invaders/src/build/CMakeFiles/rebuild_cache.dir
