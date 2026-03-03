@@ -1,6 +1,6 @@
 # Space-Invaders
 
-Re-creation of Space Invaders game, built using  using C++ and the raylib library.
+Re-creation of Space Invaders game, built using  using C++ and the [raylib](https://github.com/raysan5/raylib) library.
 
 # How to run
 
