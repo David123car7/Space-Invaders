@@ -1,26 +1,19 @@
-#pragma once 
+#pragma once
 
-#include "raylib.h"
-#include <string>
+#include "../Entity/entity.h"
 
-class Player{
+class Player: public Entity{
 	private:
 	float speed;
-	Vector2 position;
-	Texture2D texture;
 	int lives;
-	Color color;
 
 	public:
 	Player(float speed, int posX, int posY, const char* texturePath, Color color, int lives):
+		Entity(speed, posX, posY, texturePath, color),
 		speed{speed},
-		position{ (float)posX/2, (float)posY/2 },
-		texture{LoadTexture(texturePath)},
-		color{color},
-		lives{lives}  {}
+		lives{lives} {}
 
-	void LoadPlayer();
-	void UnloadPlayer(); 
+	void Shoot();
 	void MoveRight();
 	void MoveLeft();
 };
