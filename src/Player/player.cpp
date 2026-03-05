@@ -7,3 +7,13 @@ void Player::MoveRight(){
 void Player::MoveLeft(){
 	position.x -= speed * GetFrameTime();
 }
+
+void Player::UpdateCanShootState(float& seconds){
+	if(!canShoot){
+		seconds += GetFrameTime();
+		if(seconds >= shootCountdown){
+			canShoot = true;
+			seconds = 0.f;
+		}
+	}
+}

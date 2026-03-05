@@ -5,9 +5,14 @@
 
 class Bullet: public Entity{
 	private:
+	Vector2 startPosition;
+	float speed;
 	
 	public:
-	Bullet(float speed, int posX, int posY, const char* texturePath, Color color, int lives):
-		Entity(speed, posX, posY, texturePath, color) {}
-
+	Bullet(Vector2 position, float speed, Texture2D texture, Color color, int lives):
+		speed{speed},
+		startPosition{position},
+		Entity(position, texture, color) {}
+	
+	void Shoot();
 };

@@ -12,12 +12,20 @@ class Entity{
 	Color color;
 
 	public:
-	Entity(float speed, int posX, int posY, const char* texturePath, Color color):
-		position{ (float)posX/2, (float)posY/2 },
-		texture{LoadTexture(texturePath)},
+	Entity(Vector2 position, Texture2D texture, Color color):
+		position{position},	
+		texture{texture},
 		color{color} {}
 
-	void LoadEntity();
-	void UnloadEntity(); 
+	Entity(Vector2 position, float speed, Texture2D texture, Color color):
+		position{position},	
+		texture{texture},
+		color{color} {}
+	
+	const Vector2& GetPosition() const { return position;}
+	float GetPositionX() {return position.x;}
+	float GetPositionY() {return position.y;}
+	const float GetWidth() const {return texture.width;}
 
+	void DisplayEntity();
 };

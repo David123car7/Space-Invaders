@@ -1,12 +1,13 @@
 #include "entity.h"
+#include <raylib.h>
 
-void Entity::LoadEntity(){
-	DrawTextureV(texture, position, RED);
+void Entity::DisplayEntity(){
+	DrawTextureV(texture, position, color);
 }
 
-void Entity::UnloadEntity(){
-	UnloadTexture(texture);       
-}
+
+
+
 
 
 
