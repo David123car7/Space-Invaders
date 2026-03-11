@@ -2,20 +2,23 @@
 
 #include "../Entity/entity.h"
 
-class Player: public Entity{
+class Invader: public Entity {
 	private:
 	float speed;
-	int lives;
 	bool canShoot;
 	int shootCountdown;
 
 	public:
-	Player(Vector2 position, float speed, bool canShoot, int shootCountdown, Texture2D texture, Color color, int lives):
+	Invader():
+		speed{0.0},
+		canShoot{false},
+		shootCountdown{0} {}
+
+	Invader(Vector2 position, float speed, bool canShoot, int shootCountdown, Texture2D texture, Color color):
 		Entity(position, texture, color),
 		canShoot{canShoot},
 		shootCountdown{shootCountdown},
-		speed{speed},
-		lives{lives} {}
+		speed{speed} {}
 
 	bool GetCanShoot() { return canShoot;}
 	void SetCanShoot(bool value) { canShoot = value;}

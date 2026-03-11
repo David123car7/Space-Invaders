@@ -1,14 +1,18 @@
 #include "Entity/entity.h"
+#include "InvadersManagement/invadersManagement.h"
 #include "raylib.h"
 #include "TexturesManagement/texturesManagement.h"
 #include "Player/player.h"
+#include "Invader/invader.h"
 #include "Bullet/bullet.h"
 #include <vector>
 
 int main(void)
 {
-	const int screenWidth = 1280;
-	const int screenHeight = 720;
+	const int screenWidth = 1920;
+	const int screenHeight = 1080;
+
+	const int invadersMax = 55;
 
 	InitWindow(screenWidth, screenHeight, "Space Invaders");
 	
@@ -22,25 +26,27 @@ int main(void)
 	float bulletWidth = texturesManagement.GetBulletTextureWidth();
 	float bulletHeight = texturesManagement.GetBulletTextureHeight();
 	float invaderWidth = texturesManagement.GetInvaderTextureWidth();
-	float invaderHeight = texturesManagement.GetBulletInvaderTextureHeight();
+	float invaderHeight = texturesManagement.GetInvaderTextureHeight();
 
-	Vector2 playerPos{
+	Vector2 playerStartPos{
 		(float)screenWidth/2 - playerWidth / 2, 
 		(float)screenHeight - 150 - playerHeight / 2
 	};
 
-	Vector2 invaderPos{
+	Vector2 invaderStartPos{
 		(float)screenWidth/2 -  playerWidth / 2, 
-		(float)screenHeight/3 - playerHeight / 2
+		(float)screenHeight/2 - playerHeight / 2
 	};
 
-	Player player(playerPos, 300.f, true, 1, texturesManagement.GetPlayerTexture(),BLUE,3);
-	Entity invader(invaderPos,  texturesManagement.GetInvaderTexture(), RED);
-	
-	std::vector<Entity> invaders;
-	invaders.push_back(invader);
+	Player player(playerStartPos, 300.f, true, 1, texturesManagement.GetPlayerTexture(),BLUE,3);
+	InvadersManagement invaders(true, 1);
+
+	invaders.SpawnInvaders(invaderStartPos, texturesManagement.GetInvaderTexture());
+
 	std::vector<Bullet> bullets;
+
 	float secondsAfterShoot = 0;
+	float secondsAfterMoved = 0;
 
 	SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
 
@@ -59,13 +65,14 @@ int main(void)
 			bullets.push_back(bullet);
 			player.SetCanShoot(false);
 		}
-	
+
+		invaders.MoveInvaders(secondsAfterMoved);
+
 		BeginDrawing();
-
-			for(int i=0; i<invaders.size(); i++){
-				invaders[i].DisplayEntity();
-			}
-
+			
+			invaders.DisplayInvaders();	
+			
+			//Checks for collisions betwen invaders and bullets
 			for(int i=0; i<bullets.size(); i++){
 				float bulletPosX = bullets[i].GetPositionX();
 
@@ -74,12 +81,14 @@ int main(void)
 				if(bullets[i].GetPositionY() <= 0){
 					if(i == 0) bullets[i] = bullets.back();	
 					bullets.pop_back();
+					TraceLog(LOG_INFO, "Bullet Destroyed");
 					continue;
 				}
 				else{
 					bullets[i].DisplayEntity();
 
-					for(int j=0; j<invaders.size(); j++){
+
+					/*for(int j=0; j<invaders.size(); j++){
 						float invaderPosX = invaders[j].GetPositionX();
 						
 						//Cheks if it should check for collisions 
@@ -99,11 +108,11 @@ int main(void)
 						))
 						{
 							TraceLog(LOG_INFO, "Invader Killed");
-							invaders.pop_back();	
-							bullets.pop_back();
+							invaders[i] = invaders.back();
+							invaders.pop_back();
+							bullets.pop_back(); //need to check this
 						}
-					}
-					
+					}*/
 				}
 
 			}

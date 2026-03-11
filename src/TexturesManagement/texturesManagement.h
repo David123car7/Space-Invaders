@@ -22,5 +22,5 @@ class TexturesManagement{
 	int GetBulletTextureHeight() {return bullet.height;}
 	const Texture2D& GetInvaderTexture() const { return invader;}
 	int GetInvaderTextureWidth() {return invader.width;}
-	int GetBulletInvaderTextureHeight() {return invader.height;}
+	int GetInvaderTextureHeight() {return invader.height;}
 };

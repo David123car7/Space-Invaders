@@ -12,6 +12,11 @@ class Entity{
 	Color color;
 
 	public:
+	Entity():
+		texture{LoadTexture("../resources/noTexture.jpg")},
+		position{0,0},
+		color{RED} {}
+
 	Entity(Vector2 position, Texture2D texture, Color color):
 		position{position},	
 		texture{texture},
