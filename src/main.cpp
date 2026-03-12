@@ -1,18 +1,18 @@
 #include "Entity/entity.h"
-#include "InvadersManagement/invadersManagement.h"
+#include "Other/constants.h"
 #include "raylib.h"
-#include "TexturesManagement/texturesManagement.h"
 #include "Player/player.h"
 #include "Invader/invader.h"
 #include "Bullet/bullet.h"
+#include "InvadersManagement/invadersManagement.h"
+#include "BulletsManagement/bulletsManagement.h"
+#include "TexturesManagement/texturesManagement.h"
 #include <vector>
 
 int main(void)
 {
 	const int screenWidth = 1920;
 	const int screenHeight = 1080;
-
-	const int invadersMax = 55;
 
 	InitWindow(screenWidth, screenHeight, "Space Invaders");
 	
@@ -38,12 +38,11 @@ int main(void)
 		(float)screenHeight/2 - playerHeight / 2
 	};
 
+	InvadersManagement invadersMng(true, 1);
+	BulletsManagement bulletsMng;
 	Player player(playerStartPos, 300.f, true, 1, texturesManagement.GetPlayerTexture(),BLUE,3);
-	InvadersManagement invaders(true, 1);
 
-	invaders.SpawnInvaders(invaderStartPos, texturesManagement.GetInvaderTexture());
-
-	std::vector<Bullet> bullets;
+	invadersMng.SpawnInvaders(invaderStartPos, texturesManagement.GetInvaderTexture());
 
 	float secondsAfterShoot = 0;
 	float secondsAfterMoved = 0;
@@ -62,30 +61,68 @@ int main(void)
 			float posY = playerPosY - bulletHeight;
 			Vector2 bulletStartPos{posX, posY};
 			Bullet bullet(bulletStartPos, 500.f, texturesManagement.GetBulletTexture(),WHITE,3);
-			bullets.push_back(bullet);
+			bulletsMng.AddBullet(bullet);
 			player.SetCanShoot(false);
 		}
+		
+		player.UpdateCanShootState(secondsAfterShoot);
+		invadersMng.MoveInvaders(secondsAfterMoved);
+		
+		//Removes the bullets when they go out of the game window
+		for(int i=0; i<bulletsMng.bullets.size(); i++){
+				float bulletPosX = bulletsMng.bullets[i].GetPositionX();
 
-		invaders.MoveInvaders(secondsAfterMoved);
-
-		BeginDrawing();
-			
-			invaders.DisplayInvaders();	
-			
-			//Checks for collisions betwen invaders and bullets
-			for(int i=0; i<bullets.size(); i++){
-				float bulletPosX = bullets[i].GetPositionX();
-
-				bullets[i].Shoot();
-
-				if(bullets[i].GetPositionY() <= 0){
-					if(i == 0) bullets[i] = bullets.back();	
-					bullets.pop_back();
+				bulletsMng.bullets[i].Shoot();
+				if(bulletsMng.bullets[i].GetPositionY() <= 0){
+					bulletsMng.RemoveBullet(i);
 					TraceLog(LOG_INFO, "Bullet Destroyed");
 					continue;
 				}
-				else{
-					bullets[i].DisplayEntity();
+
+				for(int j=0; j<INVADERS_X_SIZE; j++){
+					bool bulletCollision = false;
+					for(int k=0; k<INVADERS_Y_SIZE; k++){
+						if(!invadersMng.invaders[j][k].GetIsAlive())		
+							continue;	
+
+						float invaderPosX = invadersMng.invaders[j][k].GetPositionX();
+						
+						//Cheks if it should check for collisions 
+						//As it stands only makes sense to static obstacles, i need to change this to work to moving obstacles
+						//Maybe i can create a formula to predict what the bullet hits according to the bullet and invaders speed
+						/*if(bulletPosX + bulletWidth < invaderPosX 
+								|| bulletPosX > invaderPosX + invaderWidth){
+							TraceLog(LOG_INFO, "Bullet Ignored");
+							continue;
+						}*/
+
+						if(CheckCollisionCircles(
+							bulletsMng.bullets[i].GetPosition(),
+							texturesManagement.GetBulletTexture().height, 
+							invadersMng.invaders[j][k].GetPosition(),
+							invaderWidth	
+						))
+						{
+							TraceLog(LOG_INFO, "Invader Killed");
+							bulletsMng.RemoveBullet(i);
+							bulletCollision = true;
+							invadersMng.invaders[j][k].SetIsAlive(false);
+							break;
+						}
+					}
+					if(bulletCollision) break;
+				}
+
+		}	
+
+		BeginDrawing();
+			
+			invadersMng.DisplayInvaders();	
+			bulletsMng.DisplayBullets();
+			player.DisplayEntity();
+			
+			//Checks for collisions betwen invaders and bullets
+			
 
 
 					/*for(int j=0; j<invaders.size(); j++){
@@ -113,17 +150,9 @@ int main(void)
 							bullets.pop_back(); //need to check this
 						}
 					}*/
-				}
-
-			}
-
-			player.DisplayEntity();
-
 			ClearBackground(BLACK);
 
 		EndDrawing();
-		
-		player.UpdateCanShootState(secondsAfterShoot);
 	}
 	
 	CloseWindow();                

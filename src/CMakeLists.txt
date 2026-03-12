@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(raylib REQUIRED)
 
 # 2. Tell CMake which file is your "starting point"
-add_executable(SpaceInvaders main.cpp Player/player.cpp Entity/entity.cpp Bullet/bullet.cpp Invader/invader.cpp InvadersManagement/invadersManagement.cpp)
+add_executable(SpaceInvaders main.cpp Player/player.cpp Entity/entity.cpp Bullet/bullet.cpp Invader/invader.cpp InvadersManagement/invadersManagement.cpp BulletsManagement/bulletsManagement.cpp)
 
 # 3. Link the raylib library to your executable
 target_link_libraries(SpaceInvaders raylib)

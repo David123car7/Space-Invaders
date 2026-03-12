@@ -17,3 +17,7 @@ void Invader::UpdateCanShootState(float& seconds){
 		}
 	}
 }
+
+void Invader::DisplayEntity() {
+	if(isAlive) DrawTextureV(texture, position, color); 
+}

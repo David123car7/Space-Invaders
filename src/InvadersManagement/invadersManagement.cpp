@@ -13,7 +13,7 @@ void InvadersManagement::SpawnInvaders(Vector2 startPos, Texture2D texture){
 	Vector2 enemyPos = startPos;
 	for(int i=0; i<INVADERS_X_SIZE; i++){
 		for(int j=0; j<INVADERS_Y_SIZE; j++){
-			Invader invader(enemyPos,  1000.f, true, 1, texture, RED);
+			Invader invader(enemyPos, true, 1000.f, true, 1, texture, RED);
 			invaders[i][j] = invader;
 			enemyPos.y -= texture.height * 2;
 		}

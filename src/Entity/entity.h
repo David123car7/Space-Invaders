@@ -4,16 +4,14 @@
 #include <string>
 
 class Entity{
-	private:
-	Texture2D texture;
-
 	protected:
+	Texture2D texture;
 	Vector2 position;
 	Color color;
 
 	public:
 	Entity():
-		texture{LoadTexture("../resources/noTexture.jpg")},
+		texture{0},
 		position{0,0},
 		color{RED} {}
 
@@ -32,5 +30,5 @@ class Entity{
 	float GetPositionY() {return position.y;}
 	const float GetWidth() const {return texture.width;}
 
-	void DisplayEntity();
+	virtual void DisplayEntity();
 };
