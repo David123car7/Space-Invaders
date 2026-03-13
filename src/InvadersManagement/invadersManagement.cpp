@@ -1,4 +1,5 @@
 #include "invadersManagement.h"
+#include <string>
 #include <raylib.h>
 
 void InvadersManagement::DisplayInvaders(){
@@ -34,12 +35,21 @@ void InvadersManagement::UpdateCanMoveState(float& seconds){
 
 void InvadersManagement::MoveInvaders(float& seconds){
 	if(canMove){
+		if(invaders[0][0].GetPositionX() <= 0){
+			hitLeft = true;	
+		}
+		else if(invaders[INVADERS_X_SIZE-1][INVADERS_Y_SIZE-1].GetPositionX() >=  WINDOW_WIDTH){
+			hitLeft = false;
+		}
+
 		for(int i=0; i<INVADERS_X_SIZE; i++){
 			for(int j=0; j<INVADERS_Y_SIZE; j++){
-				invaders[i][j].MoveLeft();
+				if(hitLeft) invaders[i][j].MoveRight();
+				else invaders[i][j].MoveLeft();
+
 			}
 		}
-		canMove = false;
+		//canMove = false;
 	}
 	else{
 		UpdateCanMoveState(seconds);

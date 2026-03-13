@@ -11,8 +11,8 @@
 
 int main(void)
 {
-	const int screenWidth = 1920;
-	const int screenHeight = 1080;
+	const int screenWidth = WINDOW_WIDTH;
+	const int screenHeight = WINDOW_HEIGHT;
 
 	InitWindow(screenWidth, screenHeight, "Space Invaders");
 	
@@ -38,7 +38,7 @@ int main(void)
 		(float)screenHeight/2 - playerHeight / 2
 	};
 
-	InvadersManagement invadersMng(true, 1);
+	InvadersManagement invadersMng(true, 0, false);
 	BulletsManagement bulletsMng;
 	Player player(playerStartPos, 300.f, true, 1, texturesManagement.GetPlayerTexture(),BLUE,3);
 
@@ -60,7 +60,7 @@ int main(void)
 			float posX = playerPosX + player.GetWidth() / 2 - bulletWidth / 2;
 			float posY = playerPosY - bulletHeight;
 			Vector2 bulletStartPos{posX, posY};
-			Bullet bullet(bulletStartPos, 500.f, texturesManagement.GetBulletTexture(),WHITE,3);
+			Bullet bullet(bulletStartPos, 800.f, texturesManagement.GetBulletTexture(),WHITE,3);
 			bulletsMng.AddBullet(bullet);
 			player.SetCanShoot(false);
 		}
@@ -98,9 +98,9 @@ int main(void)
 
 						if(CheckCollisionCircles(
 							bulletsMng.bullets[i].GetPosition(),
-							texturesManagement.GetBulletTexture().height, 
+							texturesManagement.GetBulletTexture().width/2, 
 							invadersMng.invaders[j][k].GetPosition(),
-							invaderWidth	
+							invaderWidth/2	
 						))
 						{
 							TraceLog(LOG_INFO, "Invader Killed");
@@ -121,35 +121,6 @@ int main(void)
 			bulletsMng.DisplayBullets();
 			player.DisplayEntity();
 			
-			//Checks for collisions betwen invaders and bullets
-			
-
-
-					/*for(int j=0; j<invaders.size(); j++){
-						float invaderPosX = invaders[j].GetPositionX();
-						
-						//Cheks if it should check for collisions 
-						//As it stands only makes sense to static obstacles, i need to change this to work to moving obstacles
-						//Maybe i can create a formula to predict what the bullet hits according to the bullet and invaders speed
-						if(bulletPosX + bulletWidth < invaderPosX 
-								|| bulletPosX > invaderPosX + invaderWidth){
-							TraceLog(LOG_INFO, "Bullet Ignored");
-							continue;
-						}
-
-						if(CheckCollisionCircles(
-							bullets[i].GetPosition(),
-							texturesManagement.GetBulletTexture().height, 
-							invaders[j].GetPosition(),
-							invaderWidth	
-						))
-						{
-							TraceLog(LOG_INFO, "Invader Killed");
-							invaders[i] = invaders.back();
-							invaders.pop_back();
-							bullets.pop_back(); //need to check this
-						}
-					}*/
 			ClearBackground(BLACK);
 
 		EndDrawing();

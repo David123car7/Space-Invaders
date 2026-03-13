@@ -8,10 +8,12 @@ class InvadersManagement{
 	Invader invaders[INVADERS_X_SIZE][INVADERS_Y_SIZE];
 	bool canMove;
 	float moveCountdown;
+	bool hitLeft; 
 	
-	InvadersManagement(bool canMove, float moveCountdown):
+	InvadersManagement(bool canMove, float moveCountdown, bool hitLeft):
 		canMove{canMove},
-		moveCountdown{moveCountdown} {}
+		moveCountdown{moveCountdown},
+		hitLeft{hitLeft}{}
 
 	void DisplayInvaders();
 	void SpawnInvaders(Vector2 startPos, Texture2D texture);
