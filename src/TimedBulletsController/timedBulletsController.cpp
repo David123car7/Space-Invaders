@@ -3,15 +3,12 @@
 
 void TimedBulletsController::UpdateCanShootState(){
 	if(!canShoot){
+		secondsAfterShoot += GetFrameTime();
 		if(secondsAfterShoot >= countDown){
 			secondsAfterShoot = 0.f;
 			canShoot = true;
 		}
 	}
-}
-
-void TimedBulletsController::UpdateSecondsAfterShoot(){
-	secondsAfterShoot += GetFrameTime();
 }
 
 void TimedBulletsController::SpawnBullet(Vector2 position, float speed, Texture2D texture, Color color){
@@ -21,16 +18,18 @@ void TimedBulletsController::SpawnBullet(Vector2 position, float speed, Texture2
 	bullets.push_back(bullet);
 }
 
-bool TimedBulletsController::ShootBulletUp(int pos){;
-	if(pos > bullets.size()-1) return false;
-	bullets[pos].ShootUp();
+void TimedBulletsController::ShootBulletsUp(){;
+	for(int i=0; i<bullets.size(); i++){
+		bullets[i].ShootUp();
+		HandleOutOfBounds(i);	
+	}
 	canShoot = false;
-	return true;
 }
 
-bool TimedBulletsController::ShootBulletDown(int pos){;
-	if(pos > bullets.size()-1) return false;
-	bullets[pos].ShootDown();
+void TimedBulletsController::ShootBulletsDown(){;
+	for(int i=0; i<bullets.size(); i++){
+		bullets[i].ShootDown();
+		HandleOutOfBounds(i);	
+	}
 	canShoot = false;
-	return true;
 }

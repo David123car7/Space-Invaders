@@ -38,17 +38,17 @@ bool InvadersController::RemoveInvader(unsigned int pos){
 	return true;
 }
 
-void InvadersController::UpdateCanMoveState(float& seconds){
+void InvadersController::UpdateCanMoveState(){
 	if(!canMove){
-		seconds += GetFrameTime();
-		if(seconds >= moveCountdown){
+		secondsAfterMoved += GetFrameTime();
+		if(secondsAfterMoved >= moveCountdown){
 			canMove = true;
-			seconds = 0.f;
+			secondsAfterMoved = 0.f;
 		}
 	}
 }
 
-void InvadersController::MoveInvaders(float& seconds, float speed, float bordersGap, float invaderWidth){
+void InvadersController::MoveInvaders(float speed, float bordersGap, float invaderWidth){
 	if(canMove){
 		if(leftCorner <= bordersGap){
 			hitLeft = true;	
@@ -73,7 +73,7 @@ void InvadersController::MoveInvaders(float& seconds, float speed, float borders
 		canMove = false;
 	}
 	else{
-		UpdateCanMoveState(seconds);
+		UpdateCanMoveState();
 	}
 }
 

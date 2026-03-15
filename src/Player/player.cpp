@@ -1,4 +1,5 @@
 #include "player.h"
+#include <raylib.h>
 
 void Player::MoveRight(){
 	position.x += speed * GetFrameTime();
@@ -8,12 +9,14 @@ void Player::MoveLeft(){
 	position.x -= speed * GetFrameTime();
 }
 
-void Player::UpdateCanShootState(float& seconds){
+void Player::UpdateCanShootState(){
 	if(!canShoot){
-		seconds += GetFrameTime();
-		if(seconds >= shootCountdown){
+		secondsAfterShoot += GetFrameTime();
+		if(secondsAfterShoot >= shootCountdown){
 			canShoot = true;
-			seconds = 0.f;
+			secondsAfterShoot = 0.f;
 		}
 	}
 }
+
+

@@ -15,12 +15,12 @@ class TexturesController{
 		bullet{LoadTexture(bulletPath)} {}
 
 	const Texture2D& GetPlayerTexture() const { return player;}
-	int GetPlayerTextureWidth() { return player.width;}
-	int GetPlayerTextureHeight() {return player.height;}
+	int GetPlayerWidth() { return player.width;}
+	int GetPlayerHeight() {return player.height;}
 	const Texture2D& GetBulletTexture() const { return bullet;} 
-	int GetBulletTextureWidth() {return bullet.width;}
-	int GetBulletTextureHeight() {return bullet.height;}
+	int GetBulletWidth() {return bullet.width;}
+	int GetBulletHeight() {return bullet.height;}
 	const Texture2D& GetInvaderTexture() const { return invader;}
-	int GetInvaderTextureWidth() {return invader.width;}
-	int GetInvaderTextureHeight() {return invader.height;}
+	int GetInvaderWidth() {return invader.width;}
+	int GetInvaderHeight() {return invader.height;}
 };

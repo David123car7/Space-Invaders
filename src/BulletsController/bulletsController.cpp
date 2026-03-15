@@ -31,15 +31,17 @@ bool BulletsController::RemoveBullet(unsigned int pos){
 	return true;
 }
 
-bool BulletsController::ShootBulletUp(int pos){;
-	if(pos >= bullets.size()) return false;	
-	bullets[pos].ShootUp();
-	return true;
+void BulletsController::ShootBulletsUp(){;
+	for(int i=0; i<bullets.size(); i++){
+		bullets[i].ShootUp();
+		HandleOutOfBounds(i);	
+	}
 }
 
-bool BulletsController::ShootBulletDown(int pos){;
-	if(pos >= bullets.size()) return false;	
-	bullets[pos].ShootDown();
-	return true;
+void BulletsController::ShootBulletsDown(){;
+	for(int i=0; i<bullets.size(); i++){
+		bullets[i].ShootUp();
+		HandleOutOfBounds(i);	
+	}
 }
 

@@ -5,25 +5,29 @@
 #include <vector>
 
 class InvadersController{
-	public:
+	private:
 	std::vector<Invader> invaders;	
 	bool canMove;
+	float secondsAfterMoved;
 	float moveCountdown;
 	bool hitLeft; 
 	float leftCorner;
 	float rightCorner;
-	
-	InvadersController(bool canMove, float moveCountdown, bool hitLeft):
-		canMove{canMove},
+
+	public:
+	InvadersController(float moveCountdown):
+		canMove{true},
+		secondsAfterMoved{0.f},
 		moveCountdown{moveCountdown},
-		hitLeft{hitLeft},
+		hitLeft{false},
 		leftCorner{0.f},
 		rightCorner{0.f} {}
-
+	
+	std::vector<Invader>& GetInvaders() {return invaders;}
 	void DisplayInvaders();
 	void SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown);
 	bool RemoveInvader(unsigned int pos);
-	void UpdateCanMoveState(float& seconds); //function to be used on the game loop
+	void UpdateCanMoveState(); //function to be used on the game loop
 	
 	/**
 	 * @brief Handles invaders movement  
@@ -32,6 +36,6 @@ class InvadersController{
 	 * @param[[TODO:direction]] bordersGap Gap between the screen borders 
 	 * @param[[TODO:direction]] invaderWidth Width of the invaders texture
 	 */
-	void MoveInvaders(float& seconds, float speed, float bordersGap, float invaderWidth);
+	void MoveInvaders(float speed, float bordersGap, float invaderWidth);
 	Vector2 GetRandomInvaderBulletPos(float bulletHeight);
 };

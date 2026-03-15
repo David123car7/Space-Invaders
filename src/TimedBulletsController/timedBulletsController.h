@@ -19,8 +19,7 @@ class TimedBulletsController: public BulletsController{
 		canShoot{true} {}
 		
 	virtual void SpawnBullet(Vector2 position, float speed, Texture2D texture, Color color) override;
-	void UpdateSecondsAfterShoot();
 	void UpdateCanShootState();
-	bool ShootBulletUp(int pos) override;	
-	bool ShootBulletDown(int pos) override;	
+	void ShootBulletsUp() override;	
+	void ShootBulletsDown() override;	
 };

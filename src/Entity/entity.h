@@ -13,19 +13,20 @@ class Entity{
 	Entity():
 		texture{0},
 		position{0,0},
-		color{RED} {}
+		color{WHITE} {}
+
+	Entity(Texture2D texture, Color color):
+		position{0,0},	
+		texture{texture},
+		color{color} {}
 
 	Entity(Vector2 position, Texture2D texture, Color color):
 		position{position},	
 		texture{texture},
 		color{color} {}
 
-	Entity(Vector2 position, float speed, Texture2D texture, Color color):
-		position{position},	
-		texture{texture},
-		color{color} {}
-	
 	const Vector2& GetPosition() const { return position;}
+	void SetPosition(Vector2 value) {position = value;}
 	float GetPositionX() {return position.x;}
 	float GetPositionY() {return position.y;}
 	const float GetWidth() const {return texture.width;}
