@@ -42,7 +42,7 @@ int main(void)
 	BulletsManagement bulletsMng;
 	Player player(playerStartPos, 300.f, true, 1, texturesManagement.GetPlayerTexture(),BLUE,3);
 
-	invadersMng.SpawnInvaders(invaderStartPos, texturesManagement.GetInvaderTexture(), 1, 1000.f);
+	invadersMng.SpawnInvaders(invaderStartPos, texturesManagement.GetInvaderTexture(), 1);
 
 	float secondsAfterShoot = 0;
 	float secondsAfterMoved = 0;
@@ -65,7 +65,7 @@ int main(void)
 		}
 		
 		player.UpdateCanShootState(secondsAfterShoot);
-		invadersMng.MoveInvaders(secondsAfterMoved, 200.f, invaderWidth);
+		invadersMng.MoveInvaders(secondsAfterMoved, 3000.f, 200.f, invaderWidth);
 		
 		//Checks for collisions
 		for(int i=0; i<bulletsMng.bullets.size(); i++){

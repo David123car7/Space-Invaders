@@ -1,10 +1,11 @@
 #include "invader.h"
 
-void Invader::MoveRight(){
+void Invader::MoveRight(float speed){
 	position.x += speed * GetFrameTime();
+
 }
 
-void Invader::MoveLeft(){
+void Invader::MoveLeft(float speed){
 	position.x -= speed * GetFrameTime();
 }
 
@@ -19,7 +20,7 @@ void Invader::UpdateCanShootState(float& seconds){
 }
 
 void Invader::DisplayEntity() {
-	if(isAlive) DrawTextureV(texture, position, color); 
+	DrawTextureV(texture, position, color); 
 }
 
 Vector2 Invader::GetBulletPosition(float bulletWidth){	

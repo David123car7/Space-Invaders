@@ -8,8 +8,10 @@ void InvadersManagement::DisplayInvaders(){
 	}
 }
 
-void InvadersManagement::SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown, float speed){
+void InvadersManagement::SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown){
 	Vector2 enemyPos = startPos;
+	leftCorner = startPos.x;
+	TraceLog(LOG_INFO, std::to_string(leftCorner).c_str());
 	int maxInvaders = INVADERS_X_SIZE * INVADERS_Y_SIZE;
 	int rowCount = 0;
 	for(int i=0; i<maxInvaders; i++){
@@ -18,8 +20,12 @@ void InvadersManagement::SpawnInvaders(Vector2 startPos, Texture2D texture, floa
 			enemyPos.x = startPos.x;
 			rowCount = 0;
 		}
-		Invader invader(enemyPos, true, speed, true, shootCountdown, texture, RED);
+		Invader invader(enemyPos, true, shootCountdown, texture, RED);
 		invaders.push_back(invader); 	
+		if(i == maxInvaders-1) {
+			rightCorner = enemyPos.x;
+			TraceLog(LOG_INFO, std::to_string(rightCorner).c_str());
+		}
 		enemyPos.x += texture.width * 2;
 		rowCount++;
 	}
@@ -42,19 +48,27 @@ void InvadersManagement::UpdateCanMoveState(float& seconds){
 	}
 }
 
-void InvadersManagement::MoveInvaders(float& seconds, float bordersGap, float invaderWidth){
+void InvadersManagement::MoveInvaders(float& seconds, float speed, float bordersGap, float invaderWidth){
 	if(canMove){
-		/*
-		if(invaders[0][0].GetPositionX() <= bordersGap){
+		if(leftCorner <= bordersGap){
 			hitLeft = true;	
 		}
-		else if(invaders[INVADERS_X_SIZE-1][INVADERS_Y_SIZE-1].GetPositionX() >=  WINDOW_WIDTH - invaderWidth - bordersGap){
+		else if(rightCorner >=  WINDOW_WIDTH - invaderWidth - bordersGap){
 			hitLeft = false;
-		}*/
+		}
 
 		for(int i=0; i<invaders.size(); i++){
-				if(hitLeft) invaders[i].MoveRight();
-				else invaders[i].MoveLeft();
+				if(hitLeft) invaders[i].MoveRight(speed);
+				else invaders[i].MoveLeft(speed);
+		}
+
+		if(hitLeft){				
+			rightCorner += speed * GetFrameTime();
+			leftCorner += speed * GetFrameTime();
+		}	
+		else{
+			rightCorner -= speed * GetFrameTime();
+			leftCorner -= speed * GetFrameTime();
 		}
 		canMove = false;
 	}

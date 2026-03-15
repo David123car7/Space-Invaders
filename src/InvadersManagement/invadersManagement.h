@@ -21,7 +21,7 @@ class InvadersManagement{
 		rightCorner{0.f} {}
 
 	void DisplayInvaders();
-	void SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown, float speed);
+	void SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown);
 	bool RemoveInvader(unsigned int pos);
 	void UpdateCanMoveState(float& seconds); //function to be used on the game loop
 	
@@ -32,7 +32,7 @@ class InvadersManagement{
 	 * @param[[TODO:direction]] bordersGap Gap between the screen borders 
 	 * @param[[TODO:direction]] invaderWidth Width of the invaders texture
 	 */
-	void MoveInvaders(float& seconds, float bordersGap, float invaderWidth);
+	void MoveInvaders(float& seconds, float speed, float bordersGap, float invaderWidth);
 	Vector2 GetRandomInvaderBulletPos(float bulletHeight);
 	
 };
