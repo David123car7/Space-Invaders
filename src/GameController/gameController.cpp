@@ -1,9 +1,12 @@
 #include "gameController.h"
 #include "../Other/constants.h"
+#include <string>
 
 void GameController::Start(){
 	SpawnInvaders();
 	SpawnPlayer();
+	uiController.SetScoreText(UI_SCORE_TEXT + std::to_string(score));
+	uiController.SetLivesText(UI_LIVES_TEXT + std::to_string(player.GetLives()));
 }
 
 void GameController::Update(){
@@ -24,6 +27,7 @@ void GameController::Render(){
 	bulletsInvaderController.DisplayBullets();
 	bulletsPlayerController.DisplayBullets();
 	player.DisplayEntity();
+	uiController.DisplayUI();
 }
 
 void GameController::HandleInput(){
@@ -50,6 +54,8 @@ void GameController::CheckCollisionsPlayerBulletsAndInvaders(){
 			{
 				bulletsPlayerController.RemoveBullet(i);
 				invadersController.RemoveInvader(j);
+				score++;
+				uiController.SetScoreText(UI_SCORE_TEXT + std::to_string(score));
 				break;
 			}
 		}

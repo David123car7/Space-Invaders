@@ -37,6 +37,8 @@ class Player: public Entity{
 
 	bool GetCanShoot() { return canShoot;}
 	void SetCanShoot(bool value) { canShoot = value;}
+	int GetLives() {return lives;}
+	int DecrementLives() {return lives--;} //Does this return the end result?
 
 	void MoveRight();
 	void MoveLeft();
