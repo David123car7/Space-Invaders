@@ -34,5 +34,4 @@ class InvadersManagement{
 	 */
 	void MoveInvaders(float& seconds, float speed, float bordersGap, float invaderWidth);
 	Vector2 GetRandomInvaderBulletPos(float bulletHeight);
-	
 };

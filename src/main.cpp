@@ -6,6 +6,7 @@
 #include "Bullet/bullet.h"
 #include "InvadersManagement/invadersManagement.h"
 #include "BulletsManagement/bulletsManagement.h"
+#include "TimedBulletsManagement/timedBulletsManagement.h"
 #include "TexturesManagement/texturesManagement.h"
 #include <vector>
 
@@ -40,6 +41,7 @@ int main(void)
 
 	InvadersManagement invadersMng(true, 0.8f, false);
 	BulletsManagement bulletsMng;
+	TimedBulletsManagement bulletsInvadersMng(1.f);
 	Player player(playerStartPos, 300.f, true, 1, texturesManagement.GetPlayerTexture(),BLUE,3);
 
 	invadersMng.SpawnInvaders(invaderStartPos, texturesManagement.GetInvaderTexture(), 1);
@@ -64,14 +66,26 @@ int main(void)
 			player.SetCanShoot(false);
 		}
 		
-		player.UpdateCanShootState(secondsAfterShoot);
-		invadersMng.MoveInvaders(secondsAfterMoved, 3000.f, 200.f, invaderWidth);
+		Vector2 invBulletPos = invadersMng.GetRandomInvaderBulletPos(bulletHeight);
+		bulletsInvadersMng.SpawnBullet(invBulletPos, 1000.f, texturesManagement.GetBulletTexture(), YELLOW);
 		
-		//Checks for collisions
+		player.UpdateCanShootState(secondsAfterShoot);
+		bulletsInvadersMng.UpdateSecondsAfterShoot();
+		bulletsInvadersMng.UpdateCanShootState();
+		invadersMng.MoveInvaders(secondsAfterMoved, 3000.f, 200.f, invaderWidth);
+
+		for(int i=0; i<bulletsInvadersMng.bullets.size(); i++){
+			bulletsInvadersMng.ShootBulletDown(i);
+
+			if(bool res = bulletsInvadersMng.HandleOutOfBounds(i); res)
+				continue;
+		}
+		
+		//Checks for collisions betwen invaders and player bullets
 		for(int i=0; i<bulletsMng.bullets.size(); i++){
 				float bulletPosX = bulletsMng.bullets[i].GetPositionX();
 
-				bulletsMng.bullets[i].Shoot();
+				bulletsMng.bullets[i].ShootUp();
 				if(bool res = bulletsMng.HandleOutOfBounds(i); res)
 					continue;
 
@@ -95,6 +109,7 @@ int main(void)
 		BeginDrawing();
 			invadersMng.DisplayInvaders();	
 			bulletsMng.DisplayBullets();
+			bulletsInvadersMng.DisplayBullets();
 			player.DisplayEntity();
 			ClearBackground(BLACK);
 		EndDrawing();

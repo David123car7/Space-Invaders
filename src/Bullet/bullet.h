@@ -14,5 +14,6 @@ class Bullet: public Entity{
 		startPosition{position},
 		Entity(position, texture, color) {}
 	
-	void Shoot();
+	void ShootUp();
+	void ShootDown();
 };

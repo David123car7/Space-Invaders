@@ -76,3 +76,11 @@ void InvadersManagement::MoveInvaders(float& seconds, float speed, float borders
 		UpdateCanMoveState(seconds);
 	}
 }
+
+Vector2 InvadersManagement::GetRandomInvaderBulletPos(float bulletHeight){
+	int pos = std::rand() % invaders.size();
+	Invader* invader = &invaders[pos];
+	float posX = invader->GetPositionX() + invader->GetWidth() / 2;
+	float posY = invader->GetPositionY() + bulletHeight;
+	return {posX, posY};
+}

@@ -7,8 +7,10 @@ class BulletsManagement{
 	public:
 	std::vector<Bullet> bullets;
 
+	virtual bool ShootBulletUp(int pos);
+	virtual bool ShootBulletDown(int pos);
 	void DisplayBullets();
 	bool HandleOutOfBounds(int pos);
-	void SpawnBullet(Vector2 position, float speed, Texture2D texture, Color color);
+	virtual void SpawnBullet(Vector2 position, float speed, Texture2D texture, Color color);
 	bool RemoveBullet(unsigned int pos);
 };
