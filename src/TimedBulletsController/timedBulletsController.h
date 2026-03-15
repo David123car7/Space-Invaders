@@ -1,19 +1,19 @@
 #pragma once
 
-#include "../BulletsManagement/bulletsManagement.h"
+#include "../BulletsController/bulletsController.h"
 
-class TimedBulletsManagement: public BulletsManagement{
+class TimedBulletsController: public BulletsController{
 	public:
 	float secondsAfterShoot;
 	float countDown;
 	bool canShoot;
 
-	TimedBulletsManagement():
+	TimedBulletsController():
 		countDown{0.f},
 		secondsAfterShoot{0.f},
 		canShoot{false} {}
 
-	TimedBulletsManagement(float countDown):
+	TimedBulletsController(float countDown):
 		countDown{countDown},
 		secondsAfterShoot{0.f},
 		canShoot{true} {}

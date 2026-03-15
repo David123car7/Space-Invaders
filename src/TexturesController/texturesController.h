@@ -2,14 +2,14 @@
 
 #include "raylib.h"
 
-class TexturesManagement{
+class TexturesController{
 	private:
 	Texture2D player;
 	Texture2D bullet;
 	Texture2D invader;
 
 	public:
-	TexturesManagement(const char* playerPath, const char* bulletPath, const char* invaderPath):
+	TexturesController(const char* playerPath, const char* bulletPath, const char* invaderPath):
 		invader{LoadTexture(invaderPath)},
 		player{LoadTexture(playerPath)},
 		bullet{LoadTexture(bulletPath)} {}

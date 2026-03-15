@@ -1,7 +1,7 @@
-#include "timedBulletsManagement.h"
+#include "timedBulletsController.h"
 #include <raylib.h>
 
-void TimedBulletsManagement::UpdateCanShootState(){
+void TimedBulletsController::UpdateCanShootState(){
 	if(!canShoot){
 		if(secondsAfterShoot >= countDown){
 			secondsAfterShoot = 0.f;
@@ -10,25 +10,25 @@ void TimedBulletsManagement::UpdateCanShootState(){
 	}
 }
 
-void TimedBulletsManagement::UpdateSecondsAfterShoot(){
+void TimedBulletsController::UpdateSecondsAfterShoot(){
 	secondsAfterShoot += GetFrameTime();
 }
 
-void TimedBulletsManagement::SpawnBullet(Vector2 position, float speed, Texture2D texture, Color color){
+void TimedBulletsController::SpawnBullet(Vector2 position, float speed, Texture2D texture, Color color){
 	if(!canShoot) return;
 	Bullet bullet(position, speed, texture, color);
 	TraceLog(LOG_INFO, "Bullet spawned");
 	bullets.push_back(bullet);
 }
 
-bool TimedBulletsManagement::ShootBulletUp(int pos){;
+bool TimedBulletsController::ShootBulletUp(int pos){;
 	if(pos > bullets.size()-1) return false;
 	bullets[pos].ShootUp();
 	canShoot = false;
 	return true;
 }
 
-bool TimedBulletsManagement::ShootBulletDown(int pos){;
+bool TimedBulletsController::ShootBulletDown(int pos){;
 	if(pos > bullets.size()-1) return false;
 	bullets[pos].ShootDown();
 	canShoot = false;

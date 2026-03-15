@@ -4,7 +4,7 @@
 #include "../Other/constants.h"
 #include <vector>
 
-class InvadersManagement{
+class InvadersController{
 	public:
 	std::vector<Invader> invaders;	
 	bool canMove;
@@ -13,7 +13,7 @@ class InvadersManagement{
 	float leftCorner;
 	float rightCorner;
 	
-	InvadersManagement(bool canMove, float moveCountdown, bool hitLeft):
+	InvadersController(bool canMove, float moveCountdown, bool hitLeft):
 		canMove{canMove},
 		moveCountdown{moveCountdown},
 		hitLeft{hitLeft},

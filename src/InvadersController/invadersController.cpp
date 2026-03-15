@@ -1,14 +1,14 @@
-#include "invadersManagement.h"
+#include "invadersController.h"
 #include <string>
 #include <raylib.h>
 
-void InvadersManagement::DisplayInvaders(){
+void InvadersController::DisplayInvaders(){
 	for(int i=0; i<invaders.size(); i++){
 		invaders[i].DisplayEntity();
 	}
 }
 
-void InvadersManagement::SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown){
+void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown){
 	Vector2 enemyPos = startPos;
 	leftCorner = startPos.x;
 	TraceLog(LOG_INFO, std::to_string(leftCorner).c_str());
@@ -31,14 +31,14 @@ void InvadersManagement::SpawnInvaders(Vector2 startPos, Texture2D texture, floa
 	}
 }
 
-bool InvadersManagement::RemoveInvader(unsigned int pos){
+bool InvadersController::RemoveInvader(unsigned int pos){
 	if(pos > invaders.size()-1) return false;
 	invaders[pos] = invaders.back();
 	invaders.pop_back();
 	return true;
 }
 
-void InvadersManagement::UpdateCanMoveState(float& seconds){
+void InvadersController::UpdateCanMoveState(float& seconds){
 	if(!canMove){
 		seconds += GetFrameTime();
 		if(seconds >= moveCountdown){
@@ -48,7 +48,7 @@ void InvadersManagement::UpdateCanMoveState(float& seconds){
 	}
 }
 
-void InvadersManagement::MoveInvaders(float& seconds, float speed, float bordersGap, float invaderWidth){
+void InvadersController::MoveInvaders(float& seconds, float speed, float bordersGap, float invaderWidth){
 	if(canMove){
 		if(leftCorner <= bordersGap){
 			hitLeft = true;	
@@ -77,7 +77,7 @@ void InvadersManagement::MoveInvaders(float& seconds, float speed, float borders
 	}
 }
 
-Vector2 InvadersManagement::GetRandomInvaderBulletPos(float bulletHeight){
+Vector2 InvadersController::GetRandomInvaderBulletPos(float bulletHeight){
 	int pos = std::rand() % invaders.size();
 	Invader* invader = &invaders[pos];
 	float posX = invader->GetPositionX() + invader->GetWidth() / 2;

@@ -3,7 +3,7 @@
 #include <vector>
 #include "../Bullet/bullet.h"
 
-class BulletsManagement{
+class BulletsController{
 	public:
 	std::vector<Bullet> bullets;
 

@@ -4,10 +4,10 @@
 #include "Player/player.h"
 #include "Invader/invader.h"
 #include "Bullet/bullet.h"
-#include "InvadersManagement/invadersManagement.h"
-#include "BulletsManagement/bulletsManagement.h"
-#include "TimedBulletsManagement/timedBulletsManagement.h"
-#include "TexturesManagement/texturesManagement.h"
+#include "InvadersController/invadersController.h"
+#include "BulletsController/bulletsController.h"
+#include "TimedBulletsController/timedBulletsController.h"
+#include "TexturesController/texturesController.h"
 #include <vector>
 
 int main(void)
@@ -21,7 +21,7 @@ int main(void)
 	const char* bulletPath = "resources/bullet.png";
 	const char* invaderPath = "resources/invader.png";
 
-	TexturesManagement texturesManagement(playerPath, bulletPath, invaderPath);	
+	TexturesController texturesManagement(playerPath, bulletPath, invaderPath);	
 	float playerWidth = texturesManagement.GetPlayerTextureWidth();	
 	float playerHeight = texturesManagement.GetPlayerTextureHeight();
 	float bulletWidth = texturesManagement.GetBulletTextureWidth();
@@ -39,9 +39,9 @@ int main(void)
 		(float)screenHeight/2 - playerHeight / 2
 	};
 
-	InvadersManagement invadersMng(true, 0.8f, false);
-	BulletsManagement bulletsMng;
-	TimedBulletsManagement bulletsInvadersMng(1.f);
+	InvadersController invadersMng(true, 0.8f, false);
+	BulletsController bulletsMng;
+	TimedBulletsController bulletsInvadersMng(1.f);
 	Player player(playerStartPos, 300.f, true, 1, texturesManagement.GetPlayerTexture(),BLUE,3);
 
 	invadersMng.SpawnInvaders(invaderStartPos, texturesManagement.GetInvaderTexture(), 1);
