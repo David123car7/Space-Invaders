@@ -21,3 +21,9 @@ void Invader::UpdateCanShootState(float& seconds){
 void Invader::DisplayEntity() {
 	if(isAlive) DrawTextureV(texture, position, color); 
 }
+
+Vector2 Invader::GetBulletPosition(float bulletWidth){	
+	float posX = position.x + (float)texture.width / 2 - bulletWidth / 2;
+	float posY = position.y + texture.height;
+	return {posX, posY};
+}

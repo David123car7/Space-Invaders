@@ -30,6 +30,7 @@ class Invader: public Entity {
 
 	void MoveRight();
 	void MoveLeft();
+	Vector2 GetBulletPosition(float bulletWidth);
 	void UpdateCanShootState(float& seconds); //function to be used on the game loop
 	void DisplayEntity() override;
 };

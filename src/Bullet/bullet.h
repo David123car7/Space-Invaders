@@ -9,7 +9,7 @@ class Bullet: public Entity{
 	float speed;
 	
 	public:
-	Bullet(Vector2 position, float speed, Texture2D texture, Color color, int lives):
+	Bullet(Vector2 position, float speed, Texture2D texture, Color color):
 		speed{speed},
 		startPosition{position},
 		Entity(position, texture, color) {}

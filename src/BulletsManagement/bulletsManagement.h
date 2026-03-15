@@ -8,6 +8,7 @@ class BulletsManagement{
 	std::vector<Bullet> bullets;
 
 	void DisplayBullets();
-	void AddBullet(Bullet& bullet);
+	bool HandleOutOfBounds(int pos);
+	void SpawnBullet(Vector2 position, float speed, Texture2D texture, Color color);
 	bool RemoveBullet(unsigned int pos);
 };

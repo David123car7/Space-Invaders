@@ -38,11 +38,11 @@ int main(void)
 		(float)screenHeight/2 - playerHeight / 2
 	};
 
-	InvadersManagement invadersMng(true, 0, false);
+	InvadersManagement invadersMng(true, 0.8f, false);
 	BulletsManagement bulletsMng;
 	Player player(playerStartPos, 300.f, true, 1, texturesManagement.GetPlayerTexture(),BLUE,3);
 
-	invadersMng.SpawnInvaders(invaderStartPos, texturesManagement.GetInvaderTexture());
+	invadersMng.SpawnInvaders(invaderStartPos, texturesManagement.GetInvaderTexture(), 1, 1000.f);
 
 	float secondsAfterShoot = 0;
 	float secondsAfterMoved = 0;
@@ -60,69 +60,43 @@ int main(void)
 			float posX = playerPosX + player.GetWidth() / 2 - bulletWidth / 2;
 			float posY = playerPosY - bulletHeight;
 			Vector2 bulletStartPos{posX, posY};
-			Bullet bullet(bulletStartPos, 800.f, texturesManagement.GetBulletTexture(),WHITE,3);
-			bulletsMng.AddBullet(bullet);
+			bulletsMng.SpawnBullet(bulletStartPos, 1000.f, texturesManagement.GetBulletTexture(), WHITE);
 			player.SetCanShoot(false);
 		}
 		
 		player.UpdateCanShootState(secondsAfterShoot);
-		invadersMng.MoveInvaders(secondsAfterMoved);
+		invadersMng.MoveInvaders(secondsAfterMoved, 200.f, invaderWidth);
 		
-		//Removes the bullets when they go out of the game window
+		//Checks for collisions
 		for(int i=0; i<bulletsMng.bullets.size(); i++){
 				float bulletPosX = bulletsMng.bullets[i].GetPositionX();
 
 				bulletsMng.bullets[i].Shoot();
-				if(bulletsMng.bullets[i].GetPositionY() <= 0){
-					bulletsMng.RemoveBullet(i);
-					TraceLog(LOG_INFO, "Bullet Destroyed");
+				if(bool res = bulletsMng.HandleOutOfBounds(i); res)
 					continue;
-				}
 
-				for(int j=0; j<INVADERS_X_SIZE; j++){
-					bool bulletCollision = false;
-					for(int k=0; k<INVADERS_Y_SIZE; k++){
-						if(!invadersMng.invaders[j][k].GetIsAlive())		
-							continue;	
-
-						float invaderPosX = invadersMng.invaders[j][k].GetPositionX();
-						
-						//Cheks if it should check for collisions 
-						//As it stands only makes sense to static obstacles, i need to change this to work to moving obstacles
-						//Maybe i can create a formula to predict what the bullet hits according to the bullet and invaders speed
-						/*if(bulletPosX + bulletWidth < invaderPosX 
-								|| bulletPosX > invaderPosX + invaderWidth){
-							TraceLog(LOG_INFO, "Bullet Ignored");
-							continue;
-						}*/
-
-						if(CheckCollisionCircles(
-							bulletsMng.bullets[i].GetPosition(),
-							texturesManagement.GetBulletTexture().width/2, 
-							invadersMng.invaders[j][k].GetPosition(),
-							invaderWidth/2	
-						))
-						{
-							TraceLog(LOG_INFO, "Invader Killed");
-							bulletsMng.RemoveBullet(i);
-							bulletCollision = true;
-							invadersMng.invaders[j][k].SetIsAlive(false);
-							break;
-						}
+				for(int j=0; j<invadersMng.invaders.size(); j++){
+					float invaderPosX = invadersMng.invaders[j].GetPositionX();
+					if(CheckCollisionCircles(
+						bulletsMng.bullets[i].GetPosition(),
+						bulletWidth/2, 
+						invadersMng.invaders[j].GetPosition(),
+						invaderWidth/2	
+					))
+					{
+						bulletsMng.RemoveBullet(i);
+						invadersMng.RemoveInvader(j);
+						break;
 					}
-					if(bulletCollision) break;
 				}
 
 		}	
 
 		BeginDrawing();
-			
 			invadersMng.DisplayInvaders();	
 			bulletsMng.DisplayBullets();
 			player.DisplayEntity();
-			
 			ClearBackground(BLACK);
-
 		EndDrawing();
 	}
 	

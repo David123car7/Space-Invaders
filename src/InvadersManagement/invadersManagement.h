@@ -2,21 +2,37 @@
 
 #include "../Invader/invader.h"
 #include "../Other/constants.h"
+#include <vector>
 
 class InvadersManagement{
 	public:
-	Invader invaders[INVADERS_X_SIZE][INVADERS_Y_SIZE];
+	std::vector<Invader> invaders;	
 	bool canMove;
 	float moveCountdown;
 	bool hitLeft; 
+	float leftCorner;
+	float rightCorner;
 	
 	InvadersManagement(bool canMove, float moveCountdown, bool hitLeft):
 		canMove{canMove},
 		moveCountdown{moveCountdown},
-		hitLeft{hitLeft}{}
+		hitLeft{hitLeft},
+		leftCorner{0.f},
+		rightCorner{0.f} {}
 
 	void DisplayInvaders();
-	void SpawnInvaders(Vector2 startPos, Texture2D texture);
+	void SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown, float speed);
+	bool RemoveInvader(unsigned int pos);
 	void UpdateCanMoveState(float& seconds); //function to be used on the game loop
-	void MoveInvaders(float& seconds);
+	
+	/**
+	 * @brief Handles invaders movement  
+	 *
+	 * @param[[TODO:direction]] seconds Seconds 
+	 * @param[[TODO:direction]] bordersGap Gap between the screen borders 
+	 * @param[[TODO:direction]] invaderWidth Width of the invaders texture
+	 */
+	void MoveInvaders(float& seconds, float bordersGap, float invaderWidth);
+	Vector2 GetRandomInvaderBulletPos(float bulletHeight);
+	
 };

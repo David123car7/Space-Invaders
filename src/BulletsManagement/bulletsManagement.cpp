@@ -6,7 +6,17 @@ void BulletsManagement::DisplayBullets(){
 	}
 }
 
-void BulletsManagement::AddBullet(Bullet& bullet){
+bool BulletsManagement::HandleOutOfBounds(int pos){
+	bool res = false;
+	if(bullets[pos].GetPositionY() <= 0){
+		TraceLog(LOG_INFO, "Bullet out of bounds");
+		res = RemoveBullet(pos);
+	}
+	return res;
+}
+
+void BulletsManagement::SpawnBullet(Vector2 position, float speed, Texture2D texture, Color color){
+	Bullet bullet(position, speed, texture, color);
 	bullets.push_back(bullet);
 }
 

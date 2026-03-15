@@ -3,24 +3,33 @@
 #include <raylib.h>
 
 void InvadersManagement::DisplayInvaders(){
-	for(int i=0; i<INVADERS_X_SIZE; i++){
-		for(int j=0; j<INVADERS_Y_SIZE; j++){
-			invaders[i][j].DisplayEntity();
-		}
+	for(int i=0; i<invaders.size(); i++){
+		invaders[i].DisplayEntity();
 	}
 }
 
-void InvadersManagement::SpawnInvaders(Vector2 startPos, Texture2D texture){
+void InvadersManagement::SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown, float speed){
 	Vector2 enemyPos = startPos;
-	for(int i=0; i<INVADERS_X_SIZE; i++){
-		for(int j=0; j<INVADERS_Y_SIZE; j++){
-			Invader invader(enemyPos, true, 1000.f, true, 1, texture, RED);
-			invaders[i][j] = invader;
+	int maxInvaders = INVADERS_X_SIZE * INVADERS_Y_SIZE;
+	int rowCount = 0;
+	for(int i=0; i<maxInvaders; i++){
+		if(rowCount == INVADERS_X_SIZE){
 			enemyPos.y -= texture.height * 2;
+			enemyPos.x = startPos.x;
+			rowCount = 0;
 		}
+		Invader invader(enemyPos, true, speed, true, shootCountdown, texture, RED);
+		invaders.push_back(invader); 	
 		enemyPos.x += texture.width * 2;
-		enemyPos.y = startPos.y;
+		rowCount++;
 	}
+}
+
+bool InvadersManagement::RemoveInvader(unsigned int pos){
+	if(pos > invaders.size()-1) return false;
+	invaders[pos] = invaders.back();
+	invaders.pop_back();
+	return true;
 }
 
 void InvadersManagement::UpdateCanMoveState(float& seconds){
@@ -33,23 +42,21 @@ void InvadersManagement::UpdateCanMoveState(float& seconds){
 	}
 }
 
-void InvadersManagement::MoveInvaders(float& seconds){
+void InvadersManagement::MoveInvaders(float& seconds, float bordersGap, float invaderWidth){
 	if(canMove){
-		if(invaders[0][0].GetPositionX() <= 0){
+		/*
+		if(invaders[0][0].GetPositionX() <= bordersGap){
 			hitLeft = true;	
 		}
-		else if(invaders[INVADERS_X_SIZE-1][INVADERS_Y_SIZE-1].GetPositionX() >=  WINDOW_WIDTH){
+		else if(invaders[INVADERS_X_SIZE-1][INVADERS_Y_SIZE-1].GetPositionX() >=  WINDOW_WIDTH - invaderWidth - bordersGap){
 			hitLeft = false;
-		}
+		}*/
 
-		for(int i=0; i<INVADERS_X_SIZE; i++){
-			for(int j=0; j<INVADERS_Y_SIZE; j++){
-				if(hitLeft) invaders[i][j].MoveRight();
-				else invaders[i][j].MoveLeft();
-
-			}
+		for(int i=0; i<invaders.size(); i++){
+				if(hitLeft) invaders[i].MoveRight();
+				else invaders[i].MoveLeft();
 		}
-		//canMove = false;
+		canMove = false;
 	}
 	else{
 		UpdateCanMoveState(seconds);
