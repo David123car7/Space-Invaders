@@ -15,7 +15,8 @@ void GameController::Update(){
 	InvadersShoot();
 	bulletsPlayerController.ShootBulletsUp();
 
-	CheckPlayerBulletsInvadersCollisions();
+	CheckCollisionsPlayerBulletsAndInvaders();
+	CheckCollisionsPlayerAndInvadersBullets();
 }
 
 void GameController::Render(){
@@ -34,7 +35,7 @@ void GameController::HandleInput(){
 	if (IsKeyDown(KEY_SPACE) && player.GetCanShoot()) PlayerShootInput();
 }
 
-void GameController::CheckPlayerBulletsInvadersCollisions(){
+void GameController::CheckCollisionsPlayerBulletsAndInvaders(){
 	std::vector<Bullet> bullets = bulletsPlayerController.GetBullets();
 	std::vector<Invader> invaders = invadersController.GetInvaders();
 	for(int i=0; i<bullets.size(); i++){
@@ -51,6 +52,23 @@ void GameController::CheckPlayerBulletsInvadersCollisions(){
 				invadersController.RemoveInvader(j);
 				break;
 			}
+		}
+	}
+}
+
+void GameController::CheckCollisionsPlayerAndInvadersBullets(){
+	std::vector<Bullet> bullets = bulletsInvaderController.GetBullets();
+
+	for(int i=0; i<bullets.size(); i++){
+		if(CheckCollisionCircles(
+			bullets[i].GetPosition(),
+			(float)texturesController.GetBulletWidth()/2, 
+			player.GetPosition(),
+			(float)texturesController.GetPlayerWidth()/2	
+		))
+		{
+			bulletsInvaderController.RemoveBullet(i);
+			break;
 		}
 	}
 }

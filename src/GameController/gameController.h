@@ -27,8 +27,9 @@ class GameController{
 	void Update();
 	void Render();
 	void HandleInput();
-	void CheckPlayerBulletsInvadersCollisions();
-	
+	void CheckCollisionsPlayerBulletsAndInvaders();
+	void CheckCollisionsPlayerAndInvadersBullets();
+		
 	//Invaders
 	void SpawnInvaders();
 	void InvadersShoot();
