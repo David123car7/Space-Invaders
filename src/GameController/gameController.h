@@ -19,7 +19,7 @@ class GameController{
 	
 	public:
 	GameController(float invadersMoveTimer, float invadersShootTimer, const char* playerPath, const char* bulletPath, const char* invaderPath, 
-			float speed, int shootCountdown, Color color, int lives, float scorePosX, float scorePosY, float livesPosX, float livesPosY):
+			float speed, float shootCountdown, Color color, int lives, float scorePosX, float scorePosY, float livesPosX, float livesPosY):
 		invadersController{invadersMoveTimer},
 		texturesController(playerPath, bulletPath, invaderPath),
 		bulletsPlayerController{},
@@ -35,6 +35,8 @@ class GameController{
 	void RestartGame();
 	void CheckCollisionsPlayerBulletsAndInvaders();
 	void CheckCollisionsPlayerAndInvadersBullets();
+
+	void RefreshUI();
 		
 	//Invaders
 	void SpawnInvaders();

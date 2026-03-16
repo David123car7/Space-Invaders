@@ -56,7 +56,7 @@ void InvadersController::UpdateCanMoveState(){
 	}
 }
 
-void InvadersController::MoveInvaders(float speed, float bordersGap, float invaderWidth){
+void InvadersController::MoveInvaders(int speed, int bordersGap, float invaderWidth){
 	if(canMove){
 		if(leftCorner <= bordersGap){
 			hitLeft = true;	

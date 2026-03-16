@@ -5,21 +5,20 @@
 void GameController::Start(){
 	SpawnInvaders();
 	SpawnPlayer();
-	uiController.SetScoreText(UI_SCORE_TEXT + std::to_string(score));
-	uiController.SetLivesText(UI_LIVES_TEXT + std::to_string(player.GetLives()));
 }
 
 void GameController::Update(){
 	player.UpdateCanShootState();
 	bulletsInvaderController.UpdateCanShootState();
 
-	invadersController.MoveInvaders(3000.f, 200.f, texturesController.GetInvaderWidth());
+	invadersController.MoveInvaders(INVADERS_SPEED, INVADERS_BORDERS_GAP, texturesController.GetInvaderWidth());
 	
 	InvadersShoot();
 	bulletsPlayerController.ShootBulletsUp();
 
 	CheckCollisionsPlayerBulletsAndInvaders();
 	CheckCollisionsPlayerAndInvadersBullets();
+	RefreshUI();
 }
 
 void GameController::Render(){
@@ -39,15 +38,20 @@ void GameController::HandleInput(){
 	if (IsKeyDown(KEY_SPACE) && player.GetCanShoot()) PlayerShootInput();
 }
 
+void GameController::RefreshUI(){
+	uiController.SetScoreText(UI_SCORE_TEXT + std::to_string(score));
+	uiController.SetLivesText(UI_LIVES_TEXT + std::to_string(player.GetLives()));
+}
+
 void GameController::RestartGame(){
 	invadersController.ResetInvaders();
 	player.ResetPlayer(PLAYER_LIVES);
+    	TraceLog(LOG_INFO, std::to_string(player.GetLives()).c_str());
 	score = 0;
 	Start();
 }
 
-void GameController::CheckCollisionsPlayerBulletsAndInvaders(){
-	std::vector<Bullet> bullets = bulletsPlayerController.GetBullets();
+void GameController::CheckCollisionsPlayerBulletsAndInvaders(){ std::vector<Bullet> bullets = bulletsPlayerController.GetBullets();
 	std::vector<Invader> invaders = invadersController.GetInvaders();
 	for(int i=0; i<bullets.size(); i++){
 		for(int j=0; j<invaders.size(); j++){
@@ -62,7 +66,6 @@ void GameController::CheckCollisionsPlayerBulletsAndInvaders(){
 				bulletsPlayerController.RemoveBullet(i);
 				invadersController.RemoveInvader(j);
 				score += invadersController.CalculateInvaderBonus(j);
-				uiController.SetScoreText(UI_SCORE_TEXT + std::to_string(score));
 				break;
 			}
 		}
@@ -83,7 +86,6 @@ void GameController::CheckCollisionsPlayerAndInvadersBullets(){
 			bulletsInvaderController.RemoveBullet(i);
 			int lives = player.DecrementLives();
 			if(lives == 0) RestartGame();
-			uiController.SetLivesText(UI_LIVES_TEXT + std::to_string(lives));
 			break; 
 		}
 	}

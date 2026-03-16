@@ -38,6 +38,6 @@ class InvadersController{
 	 * @param[[TODO:direction]] bordersGap Gap between the screen borders 
 	 * @param[[TODO:direction]] invaderWidth Width of the invaders texture
 	 */
-	void MoveInvaders(float speed, float bordersGap, float invaderWidth);
+	void MoveInvaders(int speed, int bordersGap, float invaderWidth);
 	Vector2 GetRandomInvaderBulletPos(float bulletHeight);
 };

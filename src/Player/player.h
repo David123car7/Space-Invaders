@@ -8,7 +8,7 @@ class Player: public Entity{
 	int lives;
 	bool canShoot;
 	float secondsAfterShoot;
-	int shootCountdown;
+	float shootCountdown;
 
 	public:
 	Player():
@@ -19,7 +19,7 @@ class Player: public Entity{
 		secondsAfterShoot{0.f},
 		shootCountdown{0} {}
 
-	Player(float speed, int shootCountdown, Texture2D texture, Color color, int lives):
+	Player(float speed, float shootCountdown, Texture2D texture, Color color, int lives):
 		Entity(texture, color),
 		canShoot{true},
 		shootCountdown{shootCountdown},
@@ -27,7 +27,7 @@ class Player: public Entity{
 		secondsAfterShoot{0.f},
 		lives{lives} {}
 
-	Player(Vector2 position, float speed, bool canShoot, int shootCountdown, Texture2D texture, Color color, int lives):
+	Player(Vector2 position, float speed, bool canShoot, float shootCountdown, Texture2D texture, Color color, int lives):
 		Entity(position, texture, color),
 		canShoot{canShoot},
 		shootCountdown{shootCountdown},
