@@ -26,7 +26,9 @@ class InvadersController{
 	std::vector<Invader>& GetInvaders() {return invaders;}
 	void DisplayInvaders();
 	void SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown);
+	void ResetInvaders();
 	bool RemoveInvader(unsigned int pos);
+	int CalculateInvaderBonus(unsigned int pos);
 	void UpdateCanMoveState(); //function to be used on the game loop
 	
 	/**

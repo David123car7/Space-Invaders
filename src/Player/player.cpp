@@ -9,6 +9,12 @@ void Player::MoveLeft(){
 	position.x -= speed * GetFrameTime();
 }
 
+void Player::ResetPlayer(int lives){
+	canShoot = true;
+	this->lives = lives;
+	secondsAfterShoot = 0.f;
+}
+
 void Player::UpdateCanShootState(){
 	if(!canShoot){
 		secondsAfterShoot += GetFrameTime();

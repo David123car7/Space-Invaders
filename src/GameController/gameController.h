@@ -32,12 +32,14 @@ class GameController{
 	void Update();
 	void Render();
 	void HandleInput();
+	void RestartGame();
 	void CheckCollisionsPlayerBulletsAndInvaders();
 	void CheckCollisionsPlayerAndInvadersBullets();
 		
 	//Invaders
 	void SpawnInvaders();
 	void InvadersShoot();
+	void CalculateBonus();
 
 	//Player
 	void SpawnPlayer();

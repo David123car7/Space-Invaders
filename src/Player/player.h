@@ -38,8 +38,9 @@ class Player: public Entity{
 	bool GetCanShoot() { return canShoot;}
 	void SetCanShoot(bool value) { canShoot = value;}
 	int GetLives() {return lives;}
-	int DecrementLives() {return lives--;} //Does this return the end result?
-
+	int DecrementLives() {return --lives;} //Does this return the end result?
+		
+	void ResetPlayer(int lives);
 	void MoveRight();
 	void MoveLeft();
 	void UpdateCanShootState(); //function to be used on the game loop

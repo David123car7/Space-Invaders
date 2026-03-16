@@ -8,5 +8,6 @@ const int INVADERS_X_SIZE = 10;
 const int INVADERS_Y_SIZE = 5;
 const std::string UI_SCORE_TEXT = "Score: ";
 const std::string UI_LIVES_TEXT = "Lives: ";
+const int PLAYER_LIVES = 3;
 
 

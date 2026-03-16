@@ -39,6 +39,13 @@ void GameController::HandleInput(){
 	if (IsKeyDown(KEY_SPACE) && player.GetCanShoot()) PlayerShootInput();
 }
 
+void GameController::RestartGame(){
+	invadersController.ResetInvaders();
+	player.ResetPlayer(PLAYER_LIVES);
+	score = 0;
+	Start();
+}
+
 void GameController::CheckCollisionsPlayerBulletsAndInvaders(){
 	std::vector<Bullet> bullets = bulletsPlayerController.GetBullets();
 	std::vector<Invader> invaders = invadersController.GetInvaders();
@@ -54,7 +61,7 @@ void GameController::CheckCollisionsPlayerBulletsAndInvaders(){
 			{
 				bulletsPlayerController.RemoveBullet(i);
 				invadersController.RemoveInvader(j);
-				score++;
+				score += invadersController.CalculateInvaderBonus(j);
 				uiController.SetScoreText(UI_SCORE_TEXT + std::to_string(score));
 				break;
 			}
@@ -74,7 +81,10 @@ void GameController::CheckCollisionsPlayerAndInvadersBullets(){
 		))
 		{
 			bulletsInvaderController.RemoveBullet(i);
-			break;
+			int lives = player.DecrementLives();
+			if(lives == 0) RestartGame();
+			uiController.SetLivesText(UI_LIVES_TEXT + std::to_string(lives));
+			break; 
 		}
 	}
 }
@@ -89,7 +99,7 @@ void GameController::SpawnPlayer(){
 
 void GameController::SpawnInvaders(){
 	Vector2 invaderStartPos{
-		(float)WINDOW_WIDTH/2 -  (float)texturesController.GetPlayerWidth() / 2, 
+		(float)WINDOW_WIDTH/3 -  (float)texturesController.GetPlayerWidth() / 2, 
 		(float)WINDOW_HEIGHT/2 - (float)texturesController.GetPlayerWidth() / 2
 	};
 	invadersController.SpawnInvaders(invaderStartPos, texturesController.GetInvaderTexture(), 1);
@@ -108,5 +118,6 @@ void GameController::InvadersShoot(){
 	bulletsInvaderController.SpawnBullet(invBulletPos, 1000.f, texturesController.GetBulletTexture(), YELLOW);
 	bulletsInvaderController.ShootBulletsDown();
 }
+
 
 

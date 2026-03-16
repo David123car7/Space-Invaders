@@ -1,4 +1,5 @@
 #include "invadersController.h"
+#include <chrono>
 #include <string>
 #include <raylib.h>
 
@@ -11,7 +12,6 @@ void InvadersController::DisplayInvaders(){
 void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown){
 	Vector2 enemyPos = startPos;
 	leftCorner = startPos.x;
-	TraceLog(LOG_INFO, std::to_string(leftCorner).c_str());
 	int maxInvaders = INVADERS_X_SIZE * INVADERS_Y_SIZE;
 	int rowCount = 0;
 	for(int i=0; i<maxInvaders; i++){
@@ -24,11 +24,19 @@ void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D texture, floa
 		invaders.push_back(invader); 	
 		if(i == maxInvaders-1) {
 			rightCorner = enemyPos.x;
-			TraceLog(LOG_INFO, std::to_string(rightCorner).c_str());
 		}
 		enemyPos.x += texture.width * 2;
 		rowCount++;
 	}
+}
+
+void InvadersController::ResetInvaders(){
+	invaders.clear();
+	canMove = true;
+	secondsAfterMoved = 0.f;
+	hitLeft = false;
+	leftCorner = 0.f;
+	rightCorner = 0.f;
 }
 
 bool InvadersController::RemoveInvader(unsigned int pos){
@@ -83,4 +91,16 @@ Vector2 InvadersController::GetRandomInvaderBulletPos(float bulletHeight){
 	float posX = invader->GetPositionX() + invader->GetWidth() / 2;
 	float posY = invader->GetPositionY() + bulletHeight;
 	return {posX, posY};
+}
+
+int InvadersController::CalculateInvaderBonus(unsigned int pos){
+	int row = pos / INVADERS_X_SIZE;
+	switch(row){
+		case 0: return 10;
+		case 1: return 25;
+		case 2: return 50;
+		case 3: return 100;
+		case 4: return 125;
+		default: return 0;
+	}
 }
