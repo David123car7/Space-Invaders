@@ -68,7 +68,7 @@ void GameController::CheckCollisionsPlayerBulletsAndInvaders(){
 				bulletsPlayerController.RemoveBullet(i);
 				invadersController.RemoveInvader(j);
 				score += invadersController.CalculateInvaderBonus(j);
-				break;
+				soundController.PlayInvaderDeathSound();
 			}
 		}
 	}
@@ -88,7 +88,7 @@ void GameController::CheckCollisionsPlayerAndInvadersBullets(){
 			bulletsInvaderController.RemoveBullet(i);
 			int lives = player.DecrementLives();
 			if(lives == 0) RestartGame();
-			break; 
+			soundController.PlayPlayerDeathSound();
 		}
 	}
 }
@@ -109,6 +109,7 @@ void GameController::CheckCollisionsPlayerAndInvaders(){
 			(float)texturesController.GetPlayerWidth()/2, 
 			invaderPos, 
 			(float)texturesController.GetInvaderWidth())){
+			soundController.PlayPlayerDeathSound();
 			RestartGame();
 		}
 	}
@@ -127,7 +128,7 @@ void GameController::SpawnInvaders(){
 		(float)WINDOW_WIDTH/2 - texturesController.GetInvaderWidth() * INVADERS_X_SIZE,  
 		(float)WINDOW_HEIGHT/2 - 80
 	};
-	invadersController.SpawnInvaders(invaderStartPos, texturesController.GetInvaderTexture(), 1);
+	invadersController.SpawnInvaders(invaderStartPos, texturesController.GetInvaderTexture(), 1, INVADERS_COLOR);
 }
 
 void GameController::PlayerShootInput(){
@@ -136,6 +137,7 @@ void GameController::PlayerShootInput(){
 	Vector2 bulletStartPos{posX, posY};
 	bulletsPlayerController.SpawnBullet(bulletStartPos, 1000.f, texturesController.GetBulletTexture(), WHITE);
 	player.SetCanShoot(false);
+	soundController.PlayBulletSound();
 }
 
 void GameController::InvadersShoot(){
@@ -143,6 +145,4 @@ void GameController::InvadersShoot(){
 	bulletsInvaderController.SpawnBullet(invBulletPos, 1000.f, texturesController.GetBulletTexture(), YELLOW);
 	bulletsInvaderController.ShootBulletsDown();
 }
-
-
 

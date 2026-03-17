@@ -5,6 +5,7 @@
 #include "../TimedBulletsController/timedBulletsController.h"
 #include "../TexturesController/texturesController.h"
 #include "../UIController/uiController.h"
+#include "../SoundController/soundController.h"
 #include "../Player/player.h"
 
 class GameController{
@@ -14,6 +15,7 @@ class GameController{
 	TimedBulletsController bulletsInvaderController;
 	TexturesController texturesController;
 	UIController uiController;
+	SoundController soundController;
 	Player player;
 	int score;
 	

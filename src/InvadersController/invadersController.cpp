@@ -9,7 +9,7 @@ void InvadersController::DisplayInvaders(){
 	}
 }
 
-void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown){
+void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown, Color color){
 	Vector2 enemyPos = startPos;
 	leftCorner = startPos.x;
 	int maxInvaders = INVADERS_X_SIZE * INVADERS_Y_SIZE;
@@ -20,7 +20,7 @@ void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D texture, floa
 			enemyPos.x = startPos.x;
 			rowCount = 0;
 		}
-		Invader invader(enemyPos, true, shootCountdown, texture, RED);
+		Invader invader(enemyPos, true, shootCountdown, texture, color);
 		invaders.push_back(invader); 	
 		if(i == maxInvaders-1) {
 			rightCorner = enemyPos.x;

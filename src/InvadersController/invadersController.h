@@ -27,7 +27,7 @@ class InvadersController{
 	
 	std::vector<Invader>& GetInvaders() {return invaders;}
 	void DisplayInvaders();
-	void SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown);
+	void SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown, Color color);
 	void ResetInvaders();
 	bool RemoveInvader(unsigned int pos);
 	int CalculateInvaderBonus(unsigned int pos);

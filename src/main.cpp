@@ -8,6 +8,7 @@ int main(void)
 	const int screenHeight = WINDOW_HEIGHT;
 
 	InitWindow(screenWidth, screenHeight, "Space Invaders");
+	InitAudioDevice();
 	
 	const char* playerPath  = "resources/player.png";
 	const char* bulletPath = "resources/bullet.png";
