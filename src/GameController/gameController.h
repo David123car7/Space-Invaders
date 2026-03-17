@@ -35,6 +35,7 @@ class GameController{
 	void RestartGame();
 	void CheckCollisionsPlayerBulletsAndInvaders();
 	void CheckCollisionsPlayerAndInvadersBullets();
+	void CheckCollisionsPlayerAndInvaders();
 
 	void RefreshUI();
 		

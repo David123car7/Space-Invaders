@@ -28,5 +28,5 @@ class UIController{
 
 	void SetScoreText(std::string value) {scoreText = value;}
 	void SetLivesText(std::string value) {livesText = value;}
-	void DisplayUI();
+	void DisplayUI(int size);
 };

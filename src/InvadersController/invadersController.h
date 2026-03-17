@@ -11,6 +11,7 @@ class InvadersController{
 	float secondsAfterMoved;
 	float moveCountdown;
 	bool hitLeft; 
+	bool canMoveDown;
 	float leftCorner;
 	float rightCorner;
 
@@ -19,6 +20,7 @@ class InvadersController{
 		canMove{true},
 		secondsAfterMoved{0.f},
 		moveCountdown{moveCountdown},
+		canMoveDown{false},
 		hitLeft{false},
 		leftCorner{0.f},
 		rightCorner{0.f} {}
@@ -39,5 +41,6 @@ class InvadersController{
 	 * @param[[TODO:direction]] invaderWidth Width of the invaders texture
 	 */
 	void MoveInvaders(int speed, int bordersGap, float invaderWidth);
+	void MoveAllInvadersDown(float speed);
 	Vector2 GetRandomInvaderBulletPos(float bulletHeight);
 };

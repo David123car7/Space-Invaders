@@ -35,6 +35,7 @@ void InvadersController::ResetInvaders(){
 	canMove = true;
 	secondsAfterMoved = 0.f;
 	hitLeft = false;
+	canMoveDown = false;
 	leftCorner = 0.f;
 	rightCorner = 0.f;
 }
@@ -66,8 +67,17 @@ void InvadersController::MoveInvaders(int speed, int bordersGap, float invaderWi
 		}
 
 		for(int i=0; i<invaders.size(); i++){
-				if(hitLeft) invaders[i].MoveRight(speed);
-				else invaders[i].MoveLeft(speed);
+				if(hitLeft){
+					invaders[i].MoveRight(speed);
+					if(!canMoveDown) canMoveDown = true;
+				}
+				else {
+					invaders[i].MoveLeft(speed);
+					if(canMoveDown){
+						MoveAllInvadersDown(speed);
+						canMoveDown = false;
+					}
+				}
 		}
 
 		if(hitLeft){				
@@ -82,6 +92,12 @@ void InvadersController::MoveInvaders(int speed, int bordersGap, float invaderWi
 	}
 	else{
 		UpdateCanMoveState();
+	}
+}
+
+void InvadersController::MoveAllInvadersDown(float speed){
+	for(int i=0; i<invaders.size(); i++){
+		invaders[i].MoveDown(speed);
 	}
 }
 

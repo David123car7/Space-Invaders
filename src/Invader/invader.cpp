@@ -9,6 +9,10 @@ void Invader::MoveLeft(float speed){
 	position.x -= speed * GetFrameTime();
 }
 
+void Invader::MoveDown(float speed){
+	position.y += speed * GetFrameTime();
+}
+
 void Invader::UpdateCanShootState(float& seconds){
 	if(!canShoot){
 		seconds += GetFrameTime();

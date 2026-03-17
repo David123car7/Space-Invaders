@@ -1,5 +1,6 @@
 #include "gameController.h"
 #include "../Other/constants.h"
+#include <raylib.h>
 #include <string>
 
 void GameController::Start(){
@@ -11,13 +12,14 @@ void GameController::Update(){
 	player.UpdateCanShootState();
 	bulletsInvaderController.UpdateCanShootState();
 
-	invadersController.MoveInvaders(INVADERS_SPEED, INVADERS_BORDERS_GAP, texturesController.GetInvaderWidth());
+	invadersController.MoveInvaders(INVADERS_SPEED, BORDERS_GAP, texturesController.GetInvaderWidth());
 	
 	InvadersShoot();
 	bulletsPlayerController.ShootBulletsUp();
 
 	CheckCollisionsPlayerBulletsAndInvaders();
 	CheckCollisionsPlayerAndInvadersBullets();
+	CheckCollisionsPlayerAndInvaders();
 	RefreshUI();
 }
 
@@ -26,15 +28,15 @@ void GameController::Render(){
 	bulletsInvaderController.DisplayBullets();
 	bulletsPlayerController.DisplayBullets();
 	player.DisplayEntity();
-	uiController.DisplayUI();
+	uiController.DisplayUI(UI_TEXT_SIZE);
 }
 
 void GameController::HandleInput(){
 	float playerPosX = player.GetPositionX();
 	float playerPosY = player.GetPositionY();
 
-	if (IsKeyDown(KEY_RIGHT) && playerPosX < WINDOW_WIDTH - texturesController.GetPlayerWidth()) player.MoveRight();
-	if (IsKeyDown(KEY_LEFT) && playerPosX > 0) player.MoveLeft(); 
+	if (IsKeyDown(KEY_RIGHT) && playerPosX < WINDOW_WIDTH - texturesController.GetPlayerWidth() - BORDERS_GAP) player.MoveRight();
+	if (IsKeyDown(KEY_LEFT) && playerPosX > 0 + BORDERS_GAP) player.MoveLeft(); 
 	if (IsKeyDown(KEY_SPACE) && player.GetCanShoot()) PlayerShootInput();
 }
 
@@ -46,12 +48,12 @@ void GameController::RefreshUI(){
 void GameController::RestartGame(){
 	invadersController.ResetInvaders();
 	player.ResetPlayer(PLAYER_LIVES);
-    	TraceLog(LOG_INFO, std::to_string(player.GetLives()).c_str());
 	score = 0;
 	Start();
 }
 
-void GameController::CheckCollisionsPlayerBulletsAndInvaders(){ std::vector<Bullet> bullets = bulletsPlayerController.GetBullets();
+void GameController::CheckCollisionsPlayerBulletsAndInvaders(){ 
+	std::vector<Bullet> bullets = bulletsPlayerController.GetBullets();
 	std::vector<Invader> invaders = invadersController.GetInvaders();
 	for(int i=0; i<bullets.size(); i++){
 		for(int j=0; j<invaders.size(); j++){
@@ -91,6 +93,27 @@ void GameController::CheckCollisionsPlayerAndInvadersBullets(){
 	}
 }
 
+void GameController::CheckCollisionsPlayerAndInvaders(){
+	std::vector<Invader> invaders = invadersController.GetInvaders();
+	Vector2 playerPos{
+		player.GetPositionX() + (float)texturesController.GetPlayerWidth() / 2,
+		player.GetPositionY() + (float)texturesController.GetPlayerHeight() / 2
+	};
+	for(int i=0; i<invaders.size(); i++){
+		Vector2 invaderPos{
+			invaders[i].GetPositionX() + (float)texturesController.GetInvaderWidth() / 2,
+			invaders[i].GetPositionY() + (float)texturesController.GetInvaderHeight() / 2
+		};
+		if(CheckCollisionCircles(
+			playerPos, 
+			(float)texturesController.GetPlayerWidth()/2, 
+			invaderPos, 
+			(float)texturesController.GetInvaderWidth())){
+			RestartGame();
+		}
+	}
+}
+
 void GameController::SpawnPlayer(){
 	Vector2 playerStartPos{
 		(float)WINDOW_WIDTH/2 - (float)texturesController.GetPlayerWidth() / 2, 
@@ -101,8 +124,8 @@ void GameController::SpawnPlayer(){
 
 void GameController::SpawnInvaders(){
 	Vector2 invaderStartPos{
-		(float)WINDOW_WIDTH/3 -  (float)texturesController.GetPlayerWidth() / 2, 
-		(float)WINDOW_HEIGHT/2 - (float)texturesController.GetPlayerWidth() / 2
+		(float)WINDOW_WIDTH/2 - texturesController.GetInvaderWidth() * INVADERS_X_SIZE,  
+		(float)WINDOW_HEIGHT/2 - 80
 	};
 	invadersController.SpawnInvaders(invaderStartPos, texturesController.GetInvaderTexture(), 1);
 }
