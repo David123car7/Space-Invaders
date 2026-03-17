@@ -64,34 +64,42 @@ void InvadersController::MoveInvaders(int speed, int bordersGap, float invaderWi
 		}
 		else if(rightCorner >=  WINDOW_WIDTH - invaderWidth - bordersGap){
 			hitLeft = false;
-		}
-
-		for(int i=0; i<invaders.size(); i++){
-				if(hitLeft){
-					invaders[i].MoveRight(speed);
-					if(!canMoveDown) canMoveDown = true;
-				}
-				else {
-					invaders[i].MoveLeft(speed);
-					if(canMoveDown){
-						MoveAllInvadersDown(speed);
-						canMoveDown = false;
-					}
-				}
-		}
+		}	
 
 		if(hitLeft){				
+			if(!canMoveDown) canMoveDown = true;
+			MoveAllInvadersRight(speed);
 			rightCorner += speed * GetFrameTime();
 			leftCorner += speed * GetFrameTime();
 		}	
 		else{
-			rightCorner -= speed * GetFrameTime();
-			leftCorner -= speed * GetFrameTime();
+			if(canMoveDown){
+				MoveAllInvadersDown(speed);
+				canMoveDown = false;
+			}
+			else { 
+				MoveAllInvadersLeft(speed);
+				rightCorner -= speed * GetFrameTime();
+				leftCorner -= speed * GetFrameTime();
+			}
 		}
+		
 		canMove = false;
 	}
 	else{
 		UpdateCanMoveState();
+	}
+}
+
+void InvadersController::MoveAllInvadersRight(float speed){
+	for(int i=0; i<invaders.size(); i++){
+		invaders[i].MoveRight(speed);
+	}
+}
+
+void InvadersController::MoveAllInvadersLeft(float speed){
+	for(int i=0; i<invaders.size(); i++){
+		invaders[i].MoveLeft(speed);
 	}
 }
 

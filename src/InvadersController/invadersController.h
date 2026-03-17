@@ -41,6 +41,8 @@ class InvadersController{
 	 * @param[[TODO:direction]] invaderWidth Width of the invaders texture
 	 */
 	void MoveInvaders(int speed, int bordersGap, float invaderWidth);
+	void MoveAllInvadersLeft(float speed);
+	void MoveAllInvadersRight(float speed);
 	void MoveAllInvadersDown(float speed);
 	Vector2 GetRandomInvaderBulletPos(float bulletHeight);
 };
