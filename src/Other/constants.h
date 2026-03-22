@@ -16,3 +16,7 @@ const int BORDERS_GAP = 300;
 const int UI_TEXT_SIZE = 75;
 const Color INVADERS_COLOR = WHITE;
 
+const int INVADER_SIZE = 40;
+
+const int BULLET_WIDTH = 12;
+const int BULLET_HEIGHT = 28;

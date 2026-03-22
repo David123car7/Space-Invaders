@@ -27,10 +27,11 @@ class InvadersController{
 	
 	std::vector<Invader>& GetInvaders() {return invaders;}
 	void DisplayInvaders();
-	void SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown, Color color);
+	void SpawnInvaders(Vector2 startPos, Texture2D textureA0, Texture2D textureB0, Texture2D textureC0,  float shootCountdown, Color color);
 	void ResetInvaders();
 	bool RemoveInvader(unsigned int pos);
 	int CalculateInvaderBonus(unsigned int pos);
+	int GetInvaderRow(unsigned int pos);
 	void UpdateCanMoveState(); //function to be used on the game loop
 	
 	/**
@@ -44,5 +45,6 @@ class InvadersController{
 	void MoveAllInvadersLeft(float speed);
 	void MoveAllInvadersRight(float speed);
 	void MoveAllInvadersDown(float speed);
-	Vector2 GetRandomInvaderBulletPos(float bulletHeight);
+	int GetRandomInvaderPos();
+	Vector2 GetInvaderBulletVector(unsigned int pos, float bulletHeight);
 };

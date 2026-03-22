@@ -9,24 +9,30 @@ void InvadersController::DisplayInvaders(){
 	}
 }
 
-void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D texture, float shootCountdown, Color color){
+void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D textureA0, Texture2D textureB0, 
+	Texture2D textureC0, float shootCountdown, Color color){
 	Vector2 enemyPos = startPos;
 	leftCorner = startPos.x;
 	int maxInvaders = INVADERS_X_SIZE * INVADERS_Y_SIZE;
-	int rowCount = 0;
+	int rowCounter = 0;
+	int counter = 0;
+	Texture2D currentTexture = textureA0;
 	for(int i=0; i<maxInvaders; i++){
-		if(rowCount == INVADERS_X_SIZE){
-			enemyPos.y -= texture.height * 2;
+		if(counter == INVADERS_X_SIZE){
+			enemyPos.y -= currentTexture.height * 2;
 			enemyPos.x = startPos.x;
-			rowCount = 0;
+			counter = 0;
+			rowCounter++;
+			if(rowCounter == 2) currentTexture = textureB0;
+			else if(rowCounter == 4) currentTexture = textureC0;
 		}
-		Invader invader(enemyPos, true, shootCountdown, texture, color);
+		Invader invader(enemyPos, true, shootCountdown, currentTexture, color);
 		invaders.push_back(invader); 	
 		if(i == maxInvaders-1) {
 			rightCorner = enemyPos.x;
 		}
-		enemyPos.x += texture.width * 2;
-		rowCount++;
+		enemyPos.x += currentTexture.width * 2;
+		counter++;
 	}
 }
 
@@ -109,8 +115,11 @@ void InvadersController::MoveAllInvadersDown(float speed){
 	}
 }
 
-Vector2 InvadersController::GetRandomInvaderBulletPos(float bulletHeight){
-	int pos = std::rand() % invaders.size();
+int InvadersController::GetRandomInvaderPos(){
+	return std::rand() % invaders.size();
+}
+
+Vector2 InvadersController::GetInvaderBulletVector(unsigned int pos, float bulletHeight){
 	Invader* invader = &invaders[pos];
 	float posX = invader->GetPositionX() + invader->GetWidth() / 2;
 	float posY = invader->GetPositionY() + bulletHeight;
@@ -118,7 +127,7 @@ Vector2 InvadersController::GetRandomInvaderBulletPos(float bulletHeight){
 }
 
 int InvadersController::CalculateInvaderBonus(unsigned int pos){
-	int row = pos / INVADERS_X_SIZE;
+	int row = GetInvaderRow(pos);
 	switch(row){
 		case 0: return 10;
 		case 1: return 25;
@@ -127,4 +136,10 @@ int InvadersController::CalculateInvaderBonus(unsigned int pos){
 		case 4: return 125;
 		default: return 0;
 	}
+}
+
+int InvadersController::GetInvaderRow(unsigned int pos){
+	int j = pos / INVADERS_X_SIZE;
+	TraceLog(LOG_INFO, "%d", j);
+	return j;
 }

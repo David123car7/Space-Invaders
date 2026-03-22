@@ -20,10 +20,10 @@ class GameController{
 	int score;
 	
 	public:
-	GameController(float invadersMoveTimer, float invadersShootTimer, const char* playerPath, const char* bulletPath, const char* invaderPath, 
-			float speed, float shootCountdown, Color color, int lives, float scorePosX, float scorePosY, float livesPosX, float livesPosY):
+	GameController(float invadersMoveTimer, float invadersShootTimer, float speed, float shootCountdown, 
+			Color color, int lives, float scorePosX, float scorePosY, float livesPosX, float livesPosY):
 		invadersController{invadersMoveTimer},
-		texturesController(playerPath, bulletPath, invaderPath),
+		texturesController{},
 		bulletsPlayerController{},
 		player{speed, shootCountdown, texturesController.GetPlayerTexture(), color, lives},
 		bulletsInvaderController{invadersShootTimer},

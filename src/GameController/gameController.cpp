@@ -12,10 +12,11 @@ void GameController::Update(){
 	player.UpdateCanShootState();
 	bulletsInvaderController.UpdateCanShootState();
 
-	invadersController.MoveInvaders(INVADERS_SPEED, BORDERS_GAP, texturesController.GetInvaderWidth());
-	
+	invadersController.MoveInvaders(INVADERS_SPEED, BORDERS_GAP, INVADER_SIZE);
+
 	InvadersShoot();
 	bulletsPlayerController.ShootBulletsUp();
+	bulletsInvaderController.ShootBulletsDown();
 
 	CheckCollisionsPlayerBulletsAndInvaders();
 	CheckCollisionsPlayerAndInvadersBullets();
@@ -60,9 +61,9 @@ void GameController::CheckCollisionsPlayerBulletsAndInvaders(){
 			float invaderPosX = invaders[j].GetPositionX();
 			if(CheckCollisionCircles(
 				bullets[i].GetPosition(),
-				(float)texturesController.GetBulletWidth()/2, 
+				(float)BULLET_WIDTH/2, 
 				invaders[j].GetPosition(),
-				(float)texturesController.GetInvaderWidth()/2	
+				(float)BULLET_HEIGHT/2	
 			))
 			{
 				bulletsPlayerController.RemoveBullet(i);
@@ -80,7 +81,7 @@ void GameController::CheckCollisionsPlayerAndInvadersBullets(){
 	for(int i=0; i<bullets.size(); i++){
 		if(CheckCollisionCircles(
 			bullets[i].GetPosition(),
-			(float)texturesController.GetBulletWidth()/2, 
+			(float)BULLET_WIDTH / 2, 
 			player.GetPosition(),
 			(float)texturesController.GetPlayerWidth()/2	
 		))
@@ -101,14 +102,14 @@ void GameController::CheckCollisionsPlayerAndInvaders(){
 	};
 	for(int i=0; i<invaders.size(); i++){
 		Vector2 invaderPos{
-			invaders[i].GetPositionX() + (float)texturesController.GetInvaderWidth() / 2,
-			invaders[i].GetPositionY() + (float)texturesController.GetInvaderHeight() / 2
+			invaders[i].GetPositionX() + (float)INVADER_SIZE / 2,
+			invaders[i].GetPositionY() + (float)INVADER_SIZE / 2
 		};
 		if(CheckCollisionCircles(
 			playerPos, 
 			(float)texturesController.GetPlayerWidth()/2, 
 			invaderPos, 
-			(float)texturesController.GetInvaderWidth())){
+			INVADER_SIZE)){
 			soundController.PlayPlayerDeathSound();
 			RestartGame();
 		}
@@ -125,24 +126,37 @@ void GameController::SpawnPlayer(){
 
 void GameController::SpawnInvaders(){
 	Vector2 invaderStartPos{
-		(float)WINDOW_WIDTH/2 - texturesController.GetInvaderWidth() * INVADERS_X_SIZE,  
+		(float)WINDOW_WIDTH/2 - INVADER_SIZE * INVADERS_X_SIZE,  
 		(float)WINDOW_HEIGHT/2 - 80
 	};
-	invadersController.SpawnInvaders(invaderStartPos, texturesController.GetInvaderTexture(), 1, INVADERS_COLOR);
+	invadersController.SpawnInvaders(invaderStartPos, texturesController.GetInvaderTextureA0(), 
+			texturesController.GetInvaderTextureB0(), texturesController.GetInvaderTextureC0(),
+			1, INVADERS_COLOR);
 }
 
 void GameController::PlayerShootInput(){
-	float posX = player.GetPositionX() + player.GetWidth() / 2 - (float)texturesController.GetBulletWidth() / 2;
-	float posY = player.GetPositionY() - texturesController.GetBulletHeight();
+	float posX = player.GetPositionX() + player.GetWidth() / 2 - (float)BULLET_WIDTH / 2;
+	float posY = player.GetPositionY() - texturesController.GetBulletHeight0();
 	Vector2 bulletStartPos{posX, posY};
-	bulletsPlayerController.SpawnBullet(bulletStartPos, 1000.f, texturesController.GetBulletTexture(), WHITE);
+	bulletsPlayerController.SpawnBullet(bulletStartPos, 1000.f, texturesController.GetBulletTexture0(), WHITE);
 	player.SetCanShoot(false);
 	soundController.PlayBulletSound();
 }
 
 void GameController::InvadersShoot(){
-	Vector2 invBulletPos = invadersController.GetRandomInvaderBulletPos(texturesController.GetBulletHeight());
-	bulletsInvaderController.SpawnBullet(invBulletPos, 1000.f, texturesController.GetBulletTexture(), YELLOW);
-	bulletsInvaderController.ShootBulletsDown();
+	if(!bulletsInvaderController.GetCanShoot()) return;
+
+	int invPos = invadersController.GetRandomInvaderPos();
+	int invRow = invadersController.GetInvaderRow(invPos);
+	Texture2D bulletTexture;
+	if(invRow == 0 || invRow == 1)
+		bulletTexture = texturesController.GetBulletTexture1();
+	else if(invRow == 1 || invRow == 2)
+		bulletTexture = texturesController.GetBulletTexture2();
+	else bulletTexture = texturesController.GetBulletTexture3();
+
+	Vector2 invBulletPos = invadersController.GetInvaderBulletVector(invPos, bulletTexture.height);
+	bulletsInvaderController.SpawnBullet(invBulletPos, 1000.f, bulletTexture, YELLOW);
 }
+
 
