@@ -15,6 +15,7 @@ const int INVADERS_SPEED = 5000;
 const int BORDERS_GAP = 300;
 const int UI_TEXT_SIZE = 75;
 const Color INVADERS_COLOR = WHITE;
+const Color BULLET_COLOR = WHITE;
 
 const int INVADER_SIZE = 40;
 

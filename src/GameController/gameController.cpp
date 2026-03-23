@@ -136,27 +136,17 @@ void GameController::SpawnInvaders(){
 
 void GameController::PlayerShootInput(){
 	float posX = player.GetPositionX() + player.GetWidth() / 2 - (float)BULLET_WIDTH / 2;
-	float posY = player.GetPositionY() - texturesController.GetBulletHeight0();
+	float posY = player.GetPositionY() - texturesController.GetBulletHeight();
 	Vector2 bulletStartPos{posX, posY};
-	bulletsPlayerController.SpawnBullet(bulletStartPos, 1000.f, texturesController.GetBulletTexture0(), WHITE);
+	bulletsPlayerController.SpawnBullet(bulletStartPos, 1000.f, texturesController.GetBulletTexture(), BULLET_COLOR);
 	player.SetCanShoot(false);
 	soundController.PlayBulletSound();
 }
 
 void GameController::InvadersShoot(){
 	if(!bulletsInvaderController.GetCanShoot()) return;
-
-	int invPos = invadersController.GetRandomInvaderPos();
-	int invRow = invadersController.GetInvaderRow(invPos);
-	Texture2D bulletTexture;
-	if(invRow == 0 || invRow == 1)
-		bulletTexture = texturesController.GetBulletTexture1();
-	else if(invRow == 1 || invRow == 2)
-		bulletTexture = texturesController.GetBulletTexture2();
-	else bulletTexture = texturesController.GetBulletTexture3();
-
-	Vector2 invBulletPos = invadersController.GetInvaderBulletVector(invPos, bulletTexture.height);
-	bulletsInvaderController.SpawnBullet(invBulletPos, 1000.f, bulletTexture, YELLOW);
+	Vector2 invBulletPos = invadersController.GetRandomInvaderBulletVector(texturesController.GetBulletHeight());
+	bulletsInvaderController.SpawnBullet(invBulletPos, 1000.f, texturesController.GetBulletTexture(), BULLET_COLOR);
 }
 
 

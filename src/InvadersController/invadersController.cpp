@@ -115,11 +115,10 @@ void InvadersController::MoveAllInvadersDown(float speed){
 	}
 }
 
-int InvadersController::GetRandomInvaderPos(){
-	return std::rand() % invaders.size();
-}
 
-Vector2 InvadersController::GetInvaderBulletVector(unsigned int pos, float bulletHeight){
+
+Vector2 InvadersController::GetRandomInvaderBulletVector(float bulletHeight){
+	int pos = std::rand() % invaders.size();
 	Invader* invader = &invaders[pos];
 	float posX = invader->GetPositionX() + invader->GetWidth() / 2;
 	float posY = invader->GetPositionY() + bulletHeight;

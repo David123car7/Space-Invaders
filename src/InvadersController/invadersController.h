@@ -45,6 +45,5 @@ class InvadersController{
 	void MoveAllInvadersLeft(float speed);
 	void MoveAllInvadersRight(float speed);
 	void MoveAllInvadersDown(float speed);
-	int GetRandomInvaderPos();
-	Vector2 GetInvaderBulletVector(unsigned int pos, float bulletHeight);
+	Vector2 GetRandomInvaderBulletVector(float bulletHeight);
 };
