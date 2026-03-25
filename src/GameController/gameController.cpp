@@ -13,6 +13,14 @@ void GameController::Update(){
 	bulletsInvaderController.UpdateCanShootState();
 
 	invadersController.MoveInvaders(INVADERS_SPEED, BORDERS_GAP, INVADER_SIZE);
+	invadersController.HandleAnimations(
+			texturesController.GetInvaderTextureA0(), 
+			texturesController.GetInvaderTextureB0(),
+			texturesController.GetInvaderTextureC0(),
+			texturesController.GetInvaderTextureA1(),
+			texturesController.GetInvaderTextureB1(),
+			texturesController.GetInvaderTextureC1()
+	);
 
 	InvadersShoot();
 	bulletsPlayerController.ShootBulletsUp();

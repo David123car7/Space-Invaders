@@ -20,7 +20,7 @@ class GameController{
 	int score;
 	
 	public:
-	GameController(float invadersMoveTimer, float invadersShootTimer, float speed, float shootCountdown, 
+	GameController(float invadersMoveTimer,float invadersShootTimer, float speed, float shootCountdown, 
 			Color color, int lives, float scorePosX, float scorePosY, float livesPosX, float livesPosY):
 		invadersController{invadersMoveTimer},
 		texturesController{},

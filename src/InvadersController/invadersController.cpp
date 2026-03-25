@@ -97,6 +97,33 @@ void InvadersController::MoveInvaders(int speed, int bordersGap, float invaderWi
 	}
 }
 
+void InvadersController::HandleAnimations(Texture2D textureA0, Texture2D textureB0, Texture2D textureC0, 
+		Texture2D textureA1, Texture2D textureB1, Texture2D textureC1){
+	if(canMove){
+		for(int i=0; i<invaders.size(); i++){
+			int row = GetInvaderRow(i);
+			Texture2D* newTexture = nullptr;
+			if(row == 0 || row == 1){
+				if(invaders[i].GetTexture().id == textureA0.id)
+					newTexture = &textureA1;
+				else newTexture = &textureA0;
+			}
+			else if(row == 2 || row == 3){
+				if(invaders[i].GetTexture().id == textureB0.id)
+					newTexture = &textureB1;
+				else newTexture = &textureB0;
+			}
+			else if(row == 4){
+				if(invaders[i].GetTexture().id == textureC0.id)
+					newTexture = &textureC1;
+				else newTexture = &textureC0;
+			}
+
+			if(newTexture != nullptr) invaders[i].SetTexture(*newTexture);
+		}
+	}
+}
+
 void InvadersController::MoveAllInvadersRight(float speed){
 	for(int i=0; i<invaders.size(); i++){
 		invaders[i].MoveRight(speed);
@@ -114,8 +141,6 @@ void InvadersController::MoveAllInvadersDown(float speed){
 		invaders[i].MoveDown(speed);
 	}
 }
-
-
 
 Vector2 InvadersController::GetRandomInvaderBulletVector(float bulletHeight){
 	int pos = std::rand() % invaders.size();
