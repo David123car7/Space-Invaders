@@ -29,7 +29,9 @@ class InvadersController{
 	void DisplayInvaders();
 	void SpawnInvaders(Vector2 startPos, Texture2D textureA0, Texture2D textureB0, Texture2D textureC0,  float shootCountdown, Color color);
 	void HandleAnimations(Texture2D textureA0, Texture2D textureB0, Texture2D textureC0, Texture2D textureA1, Texture2D textureB1, Texture2D textureC1);
+	void HandleInvaderDeath(float timer);
 	void ResetInvaders();
+	bool KillInvader(unsigned int pos, Texture2D killedTexture);
 	bool RemoveInvader(unsigned int pos);
 	int CalculateInvaderBonus(unsigned int pos);
 	int GetInvaderRow(unsigned int pos);

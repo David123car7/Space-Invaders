@@ -14,6 +14,7 @@ class TexturesController{
 	Texture2D invaderB1;
 	Texture2D invaderC0;
 	Texture2D invaderC1;
+	Texture2D invaderExplosion;
 
 	public:
 	TexturesController():
@@ -23,6 +24,7 @@ class TexturesController{
 		invaderB1{LoadTexture("resources/textures/invader_b1.png")},
 		invaderC0{LoadTexture("resources/textures/invader_c0.png")},
 		invaderC1{LoadTexture("resources/textures/invader_c1.png")},
+		invaderExplosion{LoadTexture("resources/textures/invader_explosion.png")},
 		player{LoadTexture("resources/textures/player.png")},
 		bullet{LoadTexture("resources/textures/bullet.png")} {}
 
@@ -54,4 +56,6 @@ class TexturesController{
 	const Texture2D& GetInvaderTextureC1() const { return invaderC1;}
 	int GetInvaderWidthC1() {return invaderC1.width;}
 	int GetInvaderHeightC1() {return invaderC1.height;}
+
+	const Texture2D& GetInvaderExplosionTexture() const { return invaderExplosion;}
 };

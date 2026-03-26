@@ -4,21 +4,14 @@
 
 class Invader: public Entity {
 	private:
-	bool canShoot;
-	int shootCountdown;
-
+	bool isDeath;
+	float deathTimer;
+	
 	public:
-	Invader():
-		canShoot{true},
-		shootCountdown{0} {}
-
-	Invader(Vector2 position, bool canShoot, int shootCountdown, Texture2D texture, Color color):
+	Invader(Vector2 position, Texture2D texture, Color color):
 		Entity(position, texture, color),
-		canShoot{canShoot},
-		shootCountdown{shootCountdown} {}
-
-	bool GetCanShoot() { return canShoot;}
-	void SetCanShoot(bool value) { canShoot = value;}
+		isDeath{false},
+		deathTimer{0.f} {}
 
 	void MoveRight(float speed);
 	void MoveLeft(float speed);
@@ -26,4 +19,6 @@ class Invader: public Entity {
 	Vector2 GetBulletPosition(float bulletWidth);
 	void UpdateCanShootState(float& seconds); //function to be used on the game loop
 	void DisplayEntity() override;
+	void SetIsDeath(bool value) {isDeath = value;}
+	bool HandleDeath(float timer);
 };

@@ -13,6 +13,7 @@ void GameController::Update(){
 	bulletsInvaderController.UpdateCanShootState();
 
 	invadersController.MoveInvaders(INVADERS_SPEED, BORDERS_GAP, INVADER_SIZE);
+	
 	invadersController.HandleAnimations(
 			texturesController.GetInvaderTextureA0(), 
 			texturesController.GetInvaderTextureB0(),
@@ -21,6 +22,8 @@ void GameController::Update(){
 			texturesController.GetInvaderTextureB1(),
 			texturesController.GetInvaderTextureC1()
 	);
+	
+	invadersController.HandleInvaderDeath(0.1);
 
 	InvadersShoot();
 	bulletsPlayerController.ShootBulletsUp();
@@ -75,7 +78,8 @@ void GameController::CheckCollisionsPlayerBulletsAndInvaders(){
 			))
 			{
 				bulletsPlayerController.RemoveBullet(i);
-				invadersController.RemoveInvader(j);
+				//invadersController.RemoveInvader(j);
+				invadersController.KillInvader(j, texturesController.GetInvaderExplosionTexture());
 				score += invadersController.CalculateInvaderBonus(j);
 				soundController.PlayInvaderDeathSound();
 			}

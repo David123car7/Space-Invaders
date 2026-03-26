@@ -26,7 +26,7 @@ void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D textureA0, Te
 			if(rowCounter == 2) currentTexture = textureB0;
 			else if(rowCounter == 4) currentTexture = textureC0;
 		}
-		Invader invader(enemyPos, true, shootCountdown, currentTexture, color);
+		Invader invader(enemyPos, currentTexture, color);
 		invaders.push_back(invader); 	
 		if(i == maxInvaders-1) {
 			rightCorner = enemyPos.x;
@@ -46,11 +46,25 @@ void InvadersController::ResetInvaders(){
 	rightCorner = 0.f;
 }
 
+bool InvadersController::KillInvader(unsigned int pos, Texture2D killedTexture){
+	if(pos > invaders.size()-1) return false;
+	invaders[pos].SetIsDeath(true);
+	invaders[pos].SetTexture(killedTexture);
+	return true;
+}
+
 bool InvadersController::RemoveInvader(unsigned int pos){
 	if(pos > invaders.size()-1) return false;
 	invaders[pos] = invaders.back();
 	invaders.pop_back();
 	return true;
+}
+
+void InvadersController::HandleInvaderDeath(float timer){
+	for(int i=0; i<invaders.size(); i++){
+		if(invaders[i].HandleDeath(timer))
+			RemoveInvader(i);
+	}
 }
 
 void InvadersController::UpdateCanMoveState(){
