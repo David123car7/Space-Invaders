@@ -26,7 +26,7 @@ void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D textureA0, Te
 			if(rowCounter == 2) currentTexture = textureB0;
 			else if(rowCounter == 4) currentTexture = textureC0;
 		}
-		Invader invader(enemyPos, currentTexture, color);
+		Invader invader(enemyPos, currentTexture, color, i);
 		invaders.push_back(invader); 	
 		if(i == maxInvaders-1) {
 			rightCorner = enemyPos.x;
@@ -115,7 +115,7 @@ void InvadersController::HandleAnimations(Texture2D textureA0, Texture2D texture
 		Texture2D textureA1, Texture2D textureB1, Texture2D textureC1){
 	if(canMove){
 		for(int i=0; i<invaders.size(); i++){
-			int row = GetInvaderRow(i);
+			int row = GetInvaderRow(invaders[i].GetInvaderPos());
 			Texture2D* newTexture = nullptr;
 			if(row == 0 || row == 1){
 				if(invaders[i].GetTexture().id == textureA0.id)

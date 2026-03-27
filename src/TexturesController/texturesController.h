@@ -16,6 +16,7 @@ class TexturesController{
 	Texture2D invaderC1;
 	Texture2D invaderExplosion;
 
+
 	public:
 	TexturesController():
 		invaderA0{LoadTexture("resources/textures/invader_a0.png")},
