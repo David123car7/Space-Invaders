@@ -29,10 +29,13 @@ void Ufo::KillUfo(Texture2D killedTexture){
 	SetTexture(killedTexture);
 }
 
-bool Ufo::HandleUfoDeath(){
-	if(HandleDeath()){
-		isHidden = true;
-		return true;
+bool Ufo::HandleDeath(){
+	if(isDeath){
+		if(secondsAfterDeath >= deathTimer){
+			isHidden = true;
+			return true;
+		}
+		secondsAfterDeath += GetFrameTime();			
 	}
 	return false;
 }

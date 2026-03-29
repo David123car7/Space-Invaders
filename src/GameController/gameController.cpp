@@ -27,7 +27,7 @@ void GameController::Update(){
 	);
 
 	invadersController.HandleInvaderDeath();
-	if(ufo.HandleUfoDeath()){
+	if(ufo.HandleDeath()){
 		SpawnUfo();
 	}
 

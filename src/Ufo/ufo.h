@@ -35,7 +35,7 @@ class Ufo: public Invader{
 	void UpdateCanMoveState();
 	void UpdateIsHiddenState();
 	void KillUfo(Texture2D killedTexture);
-	bool HandleUfoDeath();
+	bool HandleDeath() override;
 
 
 	Vector2 GetBulletPosition(int bulletHeight);

@@ -37,6 +37,6 @@ class Invader: public Entity {
 	Vector2 GetBulletPosition(float bulletWidth);
 	void DisplayEntity() override;
 	void SetIsDeath(bool value) {isDeath = value;}
-	bool HandleDeath();
+	virtual bool HandleDeath();
 	int GetInvaderPos() {return pos;}
 };
