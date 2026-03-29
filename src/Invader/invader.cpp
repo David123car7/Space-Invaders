@@ -24,12 +24,12 @@ Vector2 Invader::GetBulletPosition(float bulletWidth){
 	return {posX, posY};
 }
 
-bool Invader::HandleDeath(float timer){
+bool Invader::HandleDeath(){
 	if(isDeath){
-		if(deathTimer >= timer){
+		if(secondsAfterDeath >= deathTimer){
 			return true; 
 		}
-		deathTimer += GetFrameTime();			
+		secondsAfterDeath += GetFrameTime();			
 	}
 	return false;
 }

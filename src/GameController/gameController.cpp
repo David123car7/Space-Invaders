@@ -6,13 +6,16 @@
 void GameController::Start(){
 	SpawnInvaders();
 	SpawnPlayer();
+	SpawnUfo();
 }
 
 void GameController::Update(){
 	player.UpdateCanShootState();
 	bulletsInvaderController.UpdateCanShootState();
+	bulletsUfoController.UpdateCanShootState();
 
 	invadersController.MoveInvaders(INVADERS_SPEED, BORDERS_GAP, INVADER_SIZE);
+	ufo.MoveUfo(UFO_SPEED);
 	
 	invadersController.HandleAnimations(
 			texturesController.GetInvaderTextureA0(), 
@@ -22,16 +25,22 @@ void GameController::Update(){
 			texturesController.GetInvaderTextureB1(),
 			texturesController.GetInvaderTextureC1()
 	);
-	
-	invadersController.HandleInvaderDeath(0.1);
+
+	invadersController.HandleInvaderDeath();
+	if(ufo.HandleUfoDeath()){
+		SpawnUfo();
+	}
 
 	InvadersShoot();
+	UfoShoot();
 	bulletsPlayerController.ShootBulletsUp();
 	bulletsInvaderController.ShootBulletsDown();
+	bulletsUfoController.ShootBulletsDown();
 
 	CheckCollisionsPlayerBulletsAndInvaders();
 	CheckCollisionsPlayerAndInvadersBullets();
 	CheckCollisionsPlayerAndInvaders();
+	CheckCollisionsPlayerBulletsAndUfo();
 	RefreshUI();
 }
 
@@ -39,6 +48,7 @@ void GameController::Render(){
 	invadersController.DisplayInvaders();	
 	bulletsInvaderController.DisplayBullets();
 	bulletsPlayerController.DisplayBullets();
+	ufo.DisplayEntity();
 	player.DisplayEntity();
 	uiController.DisplayUI(UI_TEXT_SIZE);
 }
@@ -78,7 +88,6 @@ void GameController::CheckCollisionsPlayerBulletsAndInvaders(){
 			))
 			{
 				bulletsPlayerController.RemoveBullet(i);
-				//invadersController.RemoveInvader(j);
 				invadersController.KillInvader(j, texturesController.GetInvaderExplosionTexture());
 				score += invadersController.CalculateInvaderBonus(j);
 				soundController.PlayInvaderDeathSound();
@@ -99,9 +108,41 @@ void GameController::CheckCollisionsPlayerAndInvadersBullets(){
 		))
 		{
 			bulletsInvaderController.RemoveBullet(i);
-			int lives = player.DecrementLives();
-			if(lives == 0) RestartGame();
-			soundController.PlayPlayerDeathSound();
+			HandlePlayerDamage();
+		}
+	}
+}
+
+void GameController::CheckCollisionsPlayerAndUfoBullets(){
+	std::vector<Bullet> bullets = bulletsUfoController.GetBullets();
+
+	for(int i=0; i<bullets.size(); i++){
+		if(CheckCollisionCircles(
+			bullets[i].GetPosition(),
+			(float)BULLET_WIDTH / 2, 
+			player.GetPosition(),
+			(float)texturesController.GetPlayerWidth()/2	
+		))
+		{
+			bulletsInvaderController.RemoveBullet(i);
+			HandlePlayerDamage();
+		}
+	}
+}
+
+void GameController::CheckCollisionsPlayerBulletsAndUfo(){
+	std::vector<Bullet> bullets = bulletsPlayerController.GetBullets();
+
+	for(int i=0; i<bullets.size(); i++){
+		if(CheckCollisionCircles(
+			bullets[i].GetPosition(),
+			(float)BULLET_WIDTH / 2, 
+			ufo.GetPosition(),
+			(float)texturesController.GetUfoWidth()/2	
+		))
+		{
+			bulletsUfoController.RemoveBullet(i);
+			ufo.KillUfo(texturesController.GetInvaderExplosionTexture());
 		}
 	}
 }
@@ -128,6 +169,12 @@ void GameController::CheckCollisionsPlayerAndInvaders(){
 	}
 }
 
+void GameController::HandlePlayerDamage(){
+	int lives = player.DecrementLives();
+	if(lives == 0) RestartGame();
+	soundController.PlayPlayerDeathSound();
+}
+
 void GameController::SpawnPlayer(){
 	Vector2 playerStartPos{
 		(float)WINDOW_WIDTH/2 - (float)texturesController.GetPlayerWidth() / 2, 
@@ -143,7 +190,12 @@ void GameController::SpawnInvaders(){
 	};
 	invadersController.SpawnInvaders(invaderStartPos, texturesController.GetInvaderTextureA0(), 
 			texturesController.GetInvaderTextureB0(), texturesController.GetInvaderTextureC0(),
-			1, INVADERS_COLOR);
+			1, INVADERS_COLOR, DEATH_ANIMATION_TIME);
+}
+
+void GameController::SpawnUfo(){
+	Vector2 startPos = {-300, 150};
+	ufo = {startPos, texturesController.GetUfoTexture(), UFO_COLOR, UFO_STOP_TIMER, true, false};
 }
 
 void GameController::PlayerShootInput(){
@@ -159,6 +211,12 @@ void GameController::InvadersShoot(){
 	if(!bulletsInvaderController.GetCanShoot()) return;
 	Vector2 invBulletPos = invadersController.GetRandomInvaderBulletVector(texturesController.GetBulletHeight());
 	bulletsInvaderController.SpawnBullet(invBulletPos, 1000.f, texturesController.GetBulletTexture(), BULLET_COLOR);
+}
+
+void GameController::UfoShoot(){
+	if(!bulletsUfoController.GetCanShoot()) return;
+	Vector2 ufoBulletPos = ufo.GetBulletPosition(texturesController.GetBulletHeight());
+	bulletsInvaderController.SpawnBullet(ufoBulletPos, 1000.f, texturesController.GetBulletTexture(), BULLET_COLOR);
 }
 
 

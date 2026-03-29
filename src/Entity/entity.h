@@ -30,7 +30,7 @@ class Entity{
 	float GetPositionX() {return position.x;}
 	float GetPositionY() {return position.y;}
 	const float GetWidth() const {return texture.width;}
-	void SetTexture(Texture2D& texture) {this->texture = texture;}
+	void SetTexture(Texture2D texture) {this->texture = texture;}
 	const Texture2D& GetTexture() const {return texture;}
 
 	virtual void DisplayEntity();

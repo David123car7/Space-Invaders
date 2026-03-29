@@ -3,17 +3,33 @@
 #include "../Entity/entity.h"
 
 class Invader: public Entity {
-	private:
-	bool isDeath;
-	float deathTimer;
+	private: 
 	int pos;
+
+	protected:
+	bool isDeath;
+	float secondsAfterDeath;
+	float deathTimer;
 	
 	public:
-	Invader(Vector2 position, Texture2D texture, Color color, int pos):
+	Invader():
+		Entity{},
+		isDeath{false},
+		deathTimer{0.f},
+		pos{-1} {}
+
+	Invader(Vector2 position, Texture2D texture, Color color, int pos, float deathTimer):
+		Entity(position, texture, color),
+		isDeath{false},
+		deathTimer{deathTimer},
+		secondsAfterDeath{0.f},
+		pos{pos} {}
+
+	Invader(Vector2 position, Texture2D texture, Color color):
 		Entity(position, texture, color),
 		isDeath{false},
 		deathTimer{0.f},
-		pos{pos} {}
+		pos{-1} {}
 
 	void MoveRight(float speed);
 	void MoveLeft(float speed);
@@ -21,6 +37,6 @@ class Invader: public Entity {
 	Vector2 GetBulletPosition(float bulletWidth);
 	void DisplayEntity() override;
 	void SetIsDeath(bool value) {isDeath = value;}
-	bool HandleDeath(float timer);
+	bool HandleDeath();
 	int GetInvaderPos() {return pos;}
 };

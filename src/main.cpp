@@ -10,7 +10,7 @@ int main(void)
 	InitWindow(screenWidth, screenHeight, "Space Invaders");
 	InitAudioDevice();
 	
-	GameController gameController(1.f, 1.f, 1000.f, 0.5, BLUE, PLAYER_LIVES, 50, 50, WINDOW_WIDTH - 450, 50);
+	GameController gameController(1.5f, 1.f, 1000.f, 0.4, BLUE, PLAYER_LIVES, 50, 50, WINDOW_WIDTH - 450, 50);
 
 	gameController.Start();
 

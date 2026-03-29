@@ -9,7 +9,7 @@ class BulletsController{
 	bool HandleOutOfBounds(int pos);
 
 	public:	
-	std::vector<Bullet>& GetBullets() {return bullets;}
+	const std::vector<Bullet>& GetBullets() {return bullets;}
 
 	virtual void ShootBulletsUp();
 	virtual void ShootBulletsDown();

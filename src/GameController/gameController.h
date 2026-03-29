@@ -6,6 +6,8 @@
 #include "../TexturesController/texturesController.h"
 #include "../UIController/uiController.h"
 #include "../SoundController/soundController.h"
+#include "../Ufo/ufo.h"
+
 #include "../Player/player.h"
 
 class GameController{
@@ -13,10 +15,12 @@ class GameController{
 	InvadersController invadersController;
 	BulletsController bulletsPlayerController;
 	TimedBulletsController bulletsInvaderController;
+	TimedBulletsController bulletsUfoController;
 	TexturesController texturesController;
 	UIController uiController;
 	SoundController soundController;
 	Player player;
+	Ufo ufo;
 	int score;
 	
 	public:
@@ -36,19 +40,24 @@ class GameController{
 	void HandleInput();
 	void RestartGame();
 	void CheckCollisionsPlayerBulletsAndInvaders();
+	void CheckCollisionsPlayerBulletsAndUfo();
 	void CheckCollisionsPlayerAndInvadersBullets();
 	void CheckCollisionsPlayerAndInvaders();
+	void CheckCollisionsPlayerAndUfoBullets();
 
 	void RefreshUI();
 		
 	//Invaders
 	void SpawnInvaders();
+	void SpawnUfo();
 	void InvadersShoot();
+	void UfoShoot();
 	void CalculateBonus();
 
 	//Player
 	void SpawnPlayer();
 	void PlayerShootInput();
+	void HandlePlayerDamage();
 };
 
 

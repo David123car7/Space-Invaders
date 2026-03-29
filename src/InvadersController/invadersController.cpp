@@ -10,7 +10,7 @@ void InvadersController::DisplayInvaders(){
 }
 
 void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D textureA0, Texture2D textureB0, 
-	Texture2D textureC0, float shootCountdown, Color color){
+	Texture2D textureC0, float shootCountdown, Color color, float invaderDeathTimer){
 	Vector2 enemyPos = startPos;
 	leftCorner = startPos.x;
 	int maxInvaders = INVADERS_X_SIZE * INVADERS_Y_SIZE;
@@ -26,7 +26,7 @@ void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D textureA0, Te
 			if(rowCounter == 2) currentTexture = textureB0;
 			else if(rowCounter == 4) currentTexture = textureC0;
 		}
-		Invader invader(enemyPos, currentTexture, color, i);
+		Invader invader(enemyPos, currentTexture, color, i, invaderDeathTimer);
 		invaders.push_back(invader); 	
 		if(i == maxInvaders-1) {
 			rightCorner = enemyPos.x;
@@ -60,9 +60,9 @@ bool InvadersController::RemoveInvader(unsigned int pos){
 	return true;
 }
 
-void InvadersController::HandleInvaderDeath(float timer){
+void InvadersController::HandleInvaderDeath(){
 	for(int i=0; i<invaders.size(); i++){
-		if(invaders[i].HandleDeath(timer))
+		if(invaders[i].HandleDeath())
 			RemoveInvader(i);
 	}
 }
@@ -178,6 +178,5 @@ int InvadersController::CalculateInvaderBonus(unsigned int pos){
 
 int InvadersController::GetInvaderRow(unsigned int pos){
 	int j = pos / INVADERS_X_SIZE;
-	TraceLog(LOG_INFO, "%d", j);
 	return j;
 }
