@@ -6,17 +6,6 @@ Re-creation of Space Invaders game, built using  using C++ and the [raylib](http
 
 # How to run
 
-## Build Raylib
-
-```bash
-cd raylib
-mkdir build && cd build
-cmake ..
-make
-sudo make install
-sudo ldconfig
-```
-
 ## Build Game
 
 ```bash
