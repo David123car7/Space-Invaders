@@ -42,3 +42,5 @@
 
 # build folders
 **build/
+
+*.cache/
