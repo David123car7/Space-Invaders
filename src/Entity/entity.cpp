@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "Entity/entity.h"
 #include <raylib.h>
 
 void Entity::DisplayEntity(){

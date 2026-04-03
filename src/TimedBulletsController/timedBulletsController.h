@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../BulletsController/bulletsController.h"
+#include "BulletsController/bulletsController.h"
 
 class TimedBulletsController: public BulletsController{
 	public:

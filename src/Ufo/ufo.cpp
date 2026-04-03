@@ -1,5 +1,5 @@
-#include "ufo.h"
-#include "../Other/constants.h"
+#include "Ufo/ufo.h"
+#include "Other/constants.h"
 #include <raylib.h>
 
 void Ufo::MoveUfo(int speed){

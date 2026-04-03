@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "../Other/constants.h"
+#include "Other/constants.h"
 #include "raylib.h"
 
 class UIController{

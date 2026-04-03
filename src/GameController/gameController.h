@@ -1,14 +1,14 @@
 #pragma once
 
-#include "../InvadersController/invadersController.h"
-#include "../BulletsController/bulletsController.h"
-#include "../TimedBulletsController/timedBulletsController.h"
-#include "../TexturesController/texturesController.h"
-#include "../UIController/uiController.h"
-#include "../SoundController/soundController.h"
-#include "../Ufo/ufo.h"
+#include "InvadersController/invadersController.h"
+#include "BulletsController/bulletsController.h"
+#include "TimedBulletsController/timedBulletsController.h"
+#include "TexturesController/texturesController.h"
+#include "UIController/uiController.h"
+#include "SoundController/soundController.h"
+#include "Ufo/ufo.h"
 
-#include "../Player/player.h"
+#include "Player/player.h"
 
 class GameController{
 	private:

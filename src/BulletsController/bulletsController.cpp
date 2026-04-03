@@ -1,5 +1,5 @@
-#include "bulletsController.h"
-#include "../Other/constants.h"
+#include "BulletsController/bulletsController.h"
+#include "Other/constants.h"
 
 void BulletsController::DisplayBullets(){
 	for(int i=0; i<bullets.size(); i++){

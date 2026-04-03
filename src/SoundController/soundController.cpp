@@ -1,4 +1,4 @@
-#include "soundController.h"
+#include "SoundController/soundController.h"
 #include <raylib.h>
 
 void SoundController::PlayBulletSound(){

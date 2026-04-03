@@ -1,4 +1,4 @@
-#include "timedBulletsController.h"
+#include "TimedBulletsController/timedBulletsController.h"
 #include <raylib.h>
 
 void TimedBulletsController::UpdateCanShootState(){

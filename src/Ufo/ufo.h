@@ -1,7 +1,7 @@
 #pragma once
 
 #include "raylib.h"
-#include "../Invader/invader.h"
+#include "Invader/invader.h"
 
 class Ufo: public Invader{
 	private:
