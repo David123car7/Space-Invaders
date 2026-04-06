@@ -1,5 +1,5 @@
-#include "gameController.h"
-#include "../Other/constants.h"
+#include "GameController/gameController.h"
+#include "Other/constants.h"
 #include <raylib.h>
 #include <string>
 

@@ -1,4 +1,4 @@
-#include "invader.h"
+#include "Invader/invader.h"
 #include <raylib.h>
 
 void Invader::MoveRight(float speed){

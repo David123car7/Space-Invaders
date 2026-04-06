@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Entity/entity.h"
+#include "Entity/entity.h"
 
 class Invader: public Entity {
 	private: 

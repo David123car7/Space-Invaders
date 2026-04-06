@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Invader/invader.h"
-#include "../Other/constants.h"
+#include "Invader/invader.h"
+#include "Other/constants.h"
 #include <vector>
 
 class InvadersController{

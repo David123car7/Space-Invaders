@@ -1,7 +1,7 @@
 #pragma once
 
 #include "raylib.h"
-#include "../Entity/entity.h"
+#include "Entity/entity.h"
 
 class Bullet: public Entity{
 	private:

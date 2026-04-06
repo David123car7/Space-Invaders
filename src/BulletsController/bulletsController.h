@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "../Bullet/bullet.h"
+#include "Bullet/bullet.h"
 
 class BulletsController{
 	protected:
