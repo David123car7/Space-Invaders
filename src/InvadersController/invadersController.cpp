@@ -1,182 +1,197 @@
 #include "invadersController.h"
 #include <chrono>
-#include <string>
 #include <raylib.h>
+#include <string>
 
-void InvadersController::DisplayInvaders(){
-	for(int i=0; i<invaders.size(); i++){
-		invaders[i].DisplayEntity();
-	}
+void InvadersController::DisplayInvaders() {
+  for (int i = 0; i < invaders.size(); i++) {
+    invaders[i].DisplayEntity();
+  }
 }
 
-void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D textureA0, Texture2D textureB0, 
-	Texture2D textureC0, float shootCountdown, Color color, float invaderDeathTimer){
-	Vector2 enemyPos = startPos;
-	leftCorner = startPos.x;
-	int maxInvaders = INVADERS_X_SIZE * INVADERS_Y_SIZE;
-	int rowCounter = 0;
-	int counter = 0;
-	Texture2D currentTexture = textureA0;
-	for(int i=0; i<maxInvaders; i++){
-		if(counter == INVADERS_X_SIZE){
-			enemyPos.y -= currentTexture.height * 2;
-			enemyPos.x = startPos.x;
-			counter = 0;
-			rowCounter++;
-			if(rowCounter == 2) currentTexture = textureB0;
-			else if(rowCounter == 4) currentTexture = textureC0;
-		}
-		Invader invader(enemyPos, currentTexture, color, i, invaderDeathTimer);
-		invaders.push_back(invader); 	
-		if(i == maxInvaders-1) {
-			rightCorner = enemyPos.x;
-		}
-		enemyPos.x += currentTexture.width * 2;
-		counter++;
-	}
+void InvadersController::SpawnInvaders(Vector2 startPos, Texture2D textureA0,
+                                       Texture2D textureB0, Texture2D textureC0,
+                                       float shootCountdown, Color color,
+                                       float invaderDeathTimer) {
+  Vector2 enemyPos = startPos;
+  leftCorner = startPos.x;
+  int maxInvaders = Constants::INVADERS_X_SIZE * Constants::INVADERS_Y_SIZE;
+  int rowCounter = 0;
+  int counter = 0;
+  Texture2D currentTexture = textureA0;
+  for (int i = 0; i < maxInvaders; i++) {
+    if (counter == Constants::INVADERS_X_SIZE) {
+      enemyPos.y -= currentTexture.height * 2;
+      enemyPos.x = startPos.x;
+      counter = 0;
+      rowCounter++;
+      if (rowCounter == 2)
+        currentTexture = textureB0;
+      else if (rowCounter == 4)
+        currentTexture = textureC0;
+    }
+    Invader invader(enemyPos, currentTexture, color, i, invaderDeathTimer);
+    invaders.push_back(invader);
+    if (i == maxInvaders - 1) {
+      rightCorner = enemyPos.x;
+    }
+    enemyPos.x += currentTexture.width * 2;
+    counter++;
+  }
 }
 
-void InvadersController::ResetInvaders(){
-	invaders.clear();
-	canMove = true;
-	secondsAfterMoved = 0.f;
-	hitLeft = false;
-	canMoveDown = false;
-	leftCorner = 0.f;
-	rightCorner = 0.f;
+void InvadersController::ResetInvaders() {
+  invaders.clear();
+  canMove = true;
+  secondsAfterMoved = 0.f;
+  hitLeft = false;
+  canMoveDown = false;
+  leftCorner = 0.f;
+  rightCorner = 0.f;
 }
 
-bool InvadersController::KillInvader(unsigned int pos, Texture2D killedTexture){
-	if(pos > invaders.size()-1) return false;
-	invaders[pos].SetIsDeath(true);
-	invaders[pos].SetTexture(killedTexture);
-	return true;
+bool InvadersController::KillInvader(unsigned int pos,
+                                     Texture2D killedTexture) {
+  if (pos > invaders.size() - 1)
+    return false;
+  invaders[pos].SetIsDeath(true);
+  invaders[pos].SetTexture(killedTexture);
+  return true;
 }
 
-bool InvadersController::RemoveInvader(unsigned int pos){
-	if(pos > invaders.size()-1) return false;
-	invaders[pos] = invaders.back();
-	invaders.pop_back();
-	return true;
+bool InvadersController::RemoveInvader(unsigned int pos) {
+  if (pos > invaders.size() - 1)
+    return false;
+  invaders[pos] = invaders.back();
+  invaders.pop_back();
+  return true;
 }
 
-void InvadersController::HandleInvaderDeath(){
-	for(int i=0; i<invaders.size(); i++){
-		if(invaders[i].HandleDeath())
-			RemoveInvader(i);
-	}
+void InvadersController::HandleInvaderDeath() {
+  for (int i = 0; i < invaders.size(); i++) {
+    if (invaders[i].HandleDeath())
+      RemoveInvader(i);
+  }
 }
 
-void InvadersController::UpdateCanMoveState(){
-	if(!canMove){
-		secondsAfterMoved += GetFrameTime();
-		if(secondsAfterMoved >= moveCountdown){
-			canMove = true;
-			secondsAfterMoved = 0.f;
-		}
-	}
+void InvadersController::UpdateCanMoveState() {
+  if (!canMove) {
+    secondsAfterMoved += GetFrameTime();
+    if (secondsAfterMoved >= moveCountdown) {
+      canMove = true;
+      secondsAfterMoved = 0.f;
+    }
+  }
 }
 
-void InvadersController::MoveInvaders(int speed, int bordersGap, float invaderWidth){
-	if(canMove){
-		if(leftCorner <= bordersGap){
-			hitLeft = true;	
-		}
-		else if(rightCorner >=  WINDOW_WIDTH - invaderWidth - bordersGap){
-			hitLeft = false;
-		}	
+void InvadersController::MoveInvaders(int speed, int bordersGap,
+                                      float invaderWidth) {
+  if (canMove) {
+    if (leftCorner <= bordersGap) {
+      hitLeft = true;
+    } else if (rightCorner >=
+               Constants::WINDOW_WIDTH - invaderWidth - bordersGap) {
+      hitLeft = false;
+    }
 
-		if(hitLeft){				
-			if(!canMoveDown) canMoveDown = true;
-			MoveAllInvadersRight(speed);
-			rightCorner += speed * GetFrameTime();
-			leftCorner += speed * GetFrameTime();
-		}	
-		else{
-			if(canMoveDown){
-				MoveAllInvadersDown(speed);
-				canMoveDown = false;
-			}
-			else { 
-				MoveAllInvadersLeft(speed);
-				rightCorner -= speed * GetFrameTime();
-				leftCorner -= speed * GetFrameTime();
-			}
-		}
-		
-		canMove = false;
-	}
-	else{
-		UpdateCanMoveState();
-	}
+    if (hitLeft) {
+      if (!canMoveDown)
+        canMoveDown = true;
+      MoveAllInvadersRight(speed);
+      rightCorner += speed * GetFrameTime();
+      leftCorner += speed * GetFrameTime();
+    } else {
+      if (canMoveDown) {
+        MoveAllInvadersDown(speed);
+        canMoveDown = false;
+      } else {
+        MoveAllInvadersLeft(speed);
+        rightCorner -= speed * GetFrameTime();
+        leftCorner -= speed * GetFrameTime();
+      }
+    }
+
+    canMove = false;
+  } else {
+    UpdateCanMoveState();
+  }
 }
 
-void InvadersController::HandleAnimations(Texture2D textureA0, Texture2D textureB0, Texture2D textureC0, 
-		Texture2D textureA1, Texture2D textureB1, Texture2D textureC1){
-	if(canMove){
-		for(int i=0; i<invaders.size(); i++){
-			int row = GetInvaderRow(invaders[i].GetInvaderPos());
-			Texture2D* newTexture = nullptr;
-			if(row == 0 || row == 1){
-				if(invaders[i].GetTexture().id == textureA0.id)
-					newTexture = &textureA1;
-				else newTexture = &textureA0;
-			}
-			else if(row == 2 || row == 3){
-				if(invaders[i].GetTexture().id == textureB0.id)
-					newTexture = &textureB1;
-				else newTexture = &textureB0;
-			}
-			else if(row == 4){
-				if(invaders[i].GetTexture().id == textureC0.id)
-					newTexture = &textureC1;
-				else newTexture = &textureC0;
-			}
+void InvadersController::HandleAnimations(
+    Texture2D textureA0, Texture2D textureB0, Texture2D textureC0,
+    Texture2D textureA1, Texture2D textureB1, Texture2D textureC1) {
+  if (canMove) {
+    for (int i = 0; i < invaders.size(); i++) {
+      int row = GetInvaderRow(invaders[i].GetInvaderPos());
+      Texture2D *newTexture = nullptr;
+      if (row == 0 || row == 1) {
+        if (invaders[i].GetTexture().id == textureA0.id)
+          newTexture = &textureA1;
+        else
+          newTexture = &textureA0;
+      } else if (row == 2 || row == 3) {
+        if (invaders[i].GetTexture().id == textureB0.id)
+          newTexture = &textureB1;
+        else
+          newTexture = &textureB0;
+      } else if (row == 4) {
+        if (invaders[i].GetTexture().id == textureC0.id)
+          newTexture = &textureC1;
+        else
+          newTexture = &textureC0;
+      }
 
-			if(newTexture != nullptr) invaders[i].SetTexture(*newTexture);
-		}
-	}
+      if (newTexture != nullptr)
+        invaders[i].SetTexture(*newTexture);
+    }
+  }
 }
 
-void InvadersController::MoveAllInvadersRight(float speed){
-	for(int i=0; i<invaders.size(); i++){
-		invaders[i].MoveRight(speed);
-	}
+void InvadersController::MoveAllInvadersRight(float speed) {
+  for (int i = 0; i < invaders.size(); i++) {
+    invaders[i].MoveRight(speed);
+  }
 }
 
-void InvadersController::MoveAllInvadersLeft(float speed){
-	for(int i=0; i<invaders.size(); i++){
-		invaders[i].MoveLeft(speed);
-	}
+void InvadersController::MoveAllInvadersLeft(float speed) {
+  for (int i = 0; i < invaders.size(); i++) {
+    invaders[i].MoveLeft(speed);
+  }
 }
 
-void InvadersController::MoveAllInvadersDown(float speed){
-	for(int i=0; i<invaders.size(); i++){
-		invaders[i].MoveDown(speed);
-	}
+void InvadersController::MoveAllInvadersDown(float speed) {
+  for (int i = 0; i < invaders.size(); i++) {
+    invaders[i].MoveDown(speed);
+  }
 }
 
-Vector2 InvadersController::GetRandomInvaderBulletVector(float bulletHeight){
-	int pos = std::rand() % invaders.size();
-	Invader* invader = &invaders[pos];
-	float posX = invader->GetPositionX() + invader->GetWidth() / 2;
-	float posY = invader->GetPositionY() + bulletHeight;
-	return {posX, posY};
+Vector2 InvadersController::GetRandomInvaderBulletVector(float bulletHeight) {
+  int pos = std::rand() % invaders.size();
+  Invader *invader = &invaders[pos];
+  float posX = invader->GetPositionX() + invader->GetWidth() / 2;
+  float posY = invader->GetPositionY() + bulletHeight;
+  return {posX, posY};
 }
 
-int InvadersController::CalculateInvaderBonus(unsigned int pos){
-	int row = GetInvaderRow(pos);
-	switch(row){
-		case 0: return 10;
-		case 1: return 25;
-		case 2: return 50;
-		case 3: return 100;
-		case 4: return 125;
-		default: return 0;
-	}
+int InvadersController::CalculateInvaderBonus(unsigned int pos) {
+  int row = GetInvaderRow(pos);
+  switch (row) {
+  case 0:
+    return 10;
+  case 1:
+    return 25;
+  case 2:
+    return 50;
+  case 3:
+    return 100;
+  case 4:
+    return 125;
+  default:
+    return 0;
+  }
 }
 
-int InvadersController::GetInvaderRow(unsigned int pos){
-	int j = pos / INVADERS_X_SIZE;
-	return j;
+int InvadersController::GetInvaderRow(unsigned int pos) {
+  int j = pos / Constants::INVADERS_X_SIZE;
+  return j;
 }
